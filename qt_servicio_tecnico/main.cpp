@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
 
     qDebug() << db.isValid();
-    db.setHostName("www.3r1k4.com");
+    db.setHostName("95.39.141.44");
     db.setPort(5432);
     db.setDatabaseName("servicio_tecnico");
     db.setUserName("postgres");
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
             }*/
 
         }
-       QSqlQuery query("SELECT nombre_marcas FROM marcas");
+       QSqlQuery query("SELECT * FROM marcas");
 
         while(query.next())
         {
