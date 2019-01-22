@@ -1,0 +1,6 @@
+QPSQL
+95.39.141.44
+5432
+servicio_tecnico
+postgres
+voldemort872
