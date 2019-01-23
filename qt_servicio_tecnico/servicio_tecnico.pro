@@ -1,30 +1,23 @@
 QT -= gui
 
-CONFIG += c++11 console
+CONFIG += c++14 console
 CONFIG -= app_bundle
 TARGET = xml_dtd
-# The following define makes your compiler emit warnings if you use
-# any feature of Qt which as been marked deprecated (the exact warnings
-# depend on your compiler). Please consult the documentation of the
-# deprecated API in order to know how to port your code away from it.
+
 DEFINES += QT_DEPRECATED_WARNINGS
 
 QT += sql
 QT += websockets
-# You can also make your code fail to compile if you use deprecated APIs.
-# In order to do so, uncomment the following line.
-# You can also select to disable deprecated APIs only up to a certain version of Qt.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
         main.cpp \
     tablaordenes.cpp \
     bbdd.cpp \
-    tablapadre.cpp \
     controlador.cpp \
     websockets.cpp \
     utils.cpp \
-    xml.cpp
+    xml.cpp \
+    tablatecnicos.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -34,8 +27,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     tablaordenes.h \
     bbdd.h \
-    tablapadre.h \
     controlador.h \
     websockets.h \
     utils.h \
-    xml.h
+    xml.h \
+    tablatecnicos.h

@@ -1,5 +1,7 @@
 #include <QDebug>
 #include "controlador.h"
+#include "tablatecnicos.h"
+#include "tablaordenes.h"
 
 
 Controlador::Controlador()
@@ -39,12 +41,22 @@ Controlador::Controlador()
 
 */
 }
-Controlador::~Controlador(){}
+Controlador::~Controlador()
+{
+    if(m_bbdd->m_bdStatus)
+    {
+        m_bbdd->disconnet();
+    }
+    delete m_bbdd;
+}
 
 void Controlador::iniciarBBDD()
 {
-    m_bbdd = new BBDD();
-    m_bbdd->connect();
+    //m_bbdd = new BBDD();
+    //hasta que el controlador no muera, se mantiene el puntero dinamico
+    m_tablaTecnicos = new TablaTecnicos();
+    m_tablaOrdenes = new TablaOrdenes();
+    m_tablaOrdenes->crearOrden();
 }
 
 void Controlador::iniciarWS()
@@ -53,3 +65,4 @@ void Controlador::iniciarWS()
   //  QObject::connect(m_ws, &m_ws::closed, &app, &QCoreApplication::quit);
 
 }
+

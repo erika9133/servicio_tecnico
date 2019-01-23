@@ -5,8 +5,9 @@
 #include <QString>
 #include "bbdd.h"
 #include "websockets.h"
+#include "xml.h"
+#include "tablatecnicos.h"
 #include "tablaordenes.h"
-#include "tablapadre.h"
 
 class Controlador
 {
@@ -18,7 +19,9 @@ public:
 private:
    BBDD *m_bbdd;
    WebSocket *m_ws;
-   tablaPadre *m_tablapadre;
+   XML *m_xml;
+   TablaTecnicos *m_tablaTecnicos;
+   TablaOrdenes *m_tablaOrdenes;
 };
 
 #endif // CONTROLADOR_H

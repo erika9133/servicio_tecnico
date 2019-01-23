@@ -2,15 +2,16 @@
 #define TABLAORDENES_H
 
 #include <QObject>
+#include <QString>
+#include <QUuid>
 #include "bbdd.h"
-#include "tablapadre.h"
 
-class TablaOrdenes
+class TablaOrdenes : protected BBDD
 {
 public:
     TablaOrdenes();
-
-    void listarPorID();
+    ~TablaOrdenes();
+    void crearOrden();
 };
 
 #endif // TABLAORDENES_H

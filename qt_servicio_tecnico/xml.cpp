@@ -3,17 +3,22 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include "xml.h"
+
 XML::XML()
 {
-
+    std::string archivoXML = "test_external.xml";
+    validaXML(archivoXML.c_str());
 }
 
 
+XML::~XML(){}
 
 
 
-bool validaXML(const char *archivoXML)
+bool XML::validaXML(const char *archivoXML)
 {
+    bool devolver;
+    /*
     bool result = false;
 
     /// Crea el contexto del analizador.
@@ -44,22 +49,8 @@ bool validaXML(const char *archivoXML)
     /// Libera memoria.
     xmlFreeDoc(doc);
     xmlFreeParserCtxt(ctxt);
-
-    return result;
+    */
+    return devolver;
 }
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
-{
-    ui->setupUi(this);
 
-    std::string archivoXML = "test_external.xml";
-
-    validaXML(archivoXML.c_str());
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
-}

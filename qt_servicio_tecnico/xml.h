@@ -7,6 +7,8 @@ class XML
 {
 public:
     XML();
+   ~XML();
+    bool validaXML(const char *archivoXM);
 };
 
 #endif // XML_H

@@ -16,6 +16,7 @@ class WebSocket : public QObject
 public:
     explicit WebSocket();
     ~WebSocket();
+    bool *m_wsStatus;
 
 signals:
     void closed();

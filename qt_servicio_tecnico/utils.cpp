@@ -1,6 +1,7 @@
 #include <QDebug>
 #include <iostream>
 #include <fstream>
+#include <QSqlQuery>
 #include "utils.h"
 
 Utils::Utils()
@@ -26,3 +27,22 @@ QStringList Utils::leer(QString archivo)
     return lista;
 }
 
+QUuid Utils::generarUUID()
+{
+  QUuid uuid = QUuid::createUuid();
+  return uuid;
+}
+
+QList<QString> Utils::buscarPorUUID(QUuid ID,QString tabla)
+{
+
+    QSqlQuery query("SELECT * FROM '"+tabla+"' where uuid='"+ID.toString()+"';");
+
+    while(query.next())
+     {
+
+         // qDebug() << "nombre_marcas" << query.value(1).toString();
+     }
+    // db.commit();*/
+
+}

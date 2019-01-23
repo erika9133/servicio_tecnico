@@ -1,0 +1,6 @@
+QPSQL
+localhost
+5432
+servicio_tecnico
+usuario
+usuario

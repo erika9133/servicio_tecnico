@@ -3,23 +3,26 @@
 
 #include <QtSql>
 #include <QObject>
+#include <iostream>
+#include <memory>
 
 class BBDD
 {
 public:
     BBDD();
     ~BBDD();
-    void connect();
-    void disconnet();
+    static void connect();
+    static void disconnet();
+    static std::unique_ptr<bool> m_bdStatus;
 protected:
-    QSqlDatabase *m_db;
+    static std::unique_ptr<QSqlDatabase> m_db;
 private:
-    QString *m_driver;
-    QString *m_host;
-    quint16 *m_port;
-    QString *m_databaseName;
-    QString *m_username;
-    QString *m_password;
+    static std::unique_ptr<QString> m_driver;
+    static std::unique_ptr<QString> m_host;
+    static std::unique_ptr<quint16> m_port;
+    static std::unique_ptr<QString> m_databaseName;
+    static std::unique_ptr<QString> m_username;
+    static std::unique_ptr<QString> m_password;
 };
 
 #endif // BBDD_H
