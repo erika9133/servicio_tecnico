@@ -1,0 +1,13 @@
+INPUT(
+./release\main.o
+./release\tablaordenes.o
+./release\bbdd.o
+./release\controlador.o
+./release\websockets.o
+./release\utils.o
+./release\xml.o
+./release\tablatecnicos.o
+./release\moc_controlador.o
+./release\moc_websockets.o
+./release\moc_xml.o
+);

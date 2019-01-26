@@ -14,7 +14,7 @@ public:
     QUuid generarUUID();
     QList<QString> buscarPorUUID(QUuid ID,QString tabla);
 protected:
-   QSqlDatabase *m_db;
+  // QSqlDatabase *m_db;
 private:
 
 };

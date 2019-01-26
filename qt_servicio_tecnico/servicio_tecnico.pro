@@ -2,12 +2,17 @@ QT -= gui
 
 CONFIG += c++14 console
 CONFIG -= app_bundle
+
+
+#INCLUDEPATH += libxml
 TARGET = xml_dtd
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
 QT += sql
 QT += websockets
+QT += xml
+
 
 SOURCES += \
         main.cpp \

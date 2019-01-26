@@ -2,9 +2,10 @@
 
 TablaTecnicos::TablaTecnicos()
 {
-   m_db;
+  // m_db;
 }
 
 TablaTecnicos::~TablaTecnicos(){}
+
 
 

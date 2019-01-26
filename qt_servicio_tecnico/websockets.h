@@ -20,6 +20,7 @@ public:
 
 signals:
     void closed();
+    void mensajeRecibido(QString message);
 
 private slots:
     void onNewConnection();

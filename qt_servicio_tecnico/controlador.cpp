@@ -1,11 +1,15 @@
 #include <QDebug>
+#include <QString>
 #include "controlador.h"
 #include "tablatecnicos.h"
 #include "tablaordenes.h"
 
+#include "xml.h"
+#include "utils.h"
 
 Controlador::Controlador()
 {
+
 
 
    // st.connect();
@@ -52,17 +56,46 @@ Controlador::~Controlador()
 
 void Controlador::iniciarBBDD()
 {
-    //m_bbdd = new BBDD();
+
+   // XML xml;
+    //xml.GenerarOrden(Utils::generarUUID());
+    m_bbdd = new BBDD();
+
     //hasta que el controlador no muera, se mantiene el puntero dinamico
-    m_tablaTecnicos = new TablaTecnicos();
+
     m_tablaOrdenes = new TablaOrdenes();
-    m_tablaOrdenes->crearOrden();
+    m_tablaTecnicos = new TablaTecnicos();
+
+
 }
 
 void Controlador::iniciarWS()
 {
-    m_ws = new WebSocket();
-  //  QObject::connect(m_ws, &m_ws::closed, &app, &QCoreApplication::quit);
 
+   // m_ws = new WebSocket();
+    m_xml = new XML();
+    QString prueba = "prueba.xml";
+    m_xml->validaXML(&prueba);
+
+
+  //  QObject::connect(m_ws,SIGNAL(mensajeRecibido(QString)), this,SLOT(mensajeEntrante(QString)));
+
+}
+
+void Controlador::mensajeEntrante(QString message)
+{
+    message = "";
+    /*
+    bool validar = m_xml->validaXML(message);
+    int tipo = m_xml->tipo();
+    if(validar)
+    {
+        switch(tipo)
+        case 1:
+            break;
+        case 2:
+            break;
+    }
+    */
 }
 

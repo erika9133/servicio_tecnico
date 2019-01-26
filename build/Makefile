@@ -225,6 +225,7 @@ Makefile: ../qt_servicio_tecnico/servicio_tecnico.pro C:/DatosMios/QT/5.11.2/min
 		C:/DatosMios/QT/5.11.2/mingw53_32/lib/Qt5Sql.prl \
 		C:/DatosMios/QT/5.11.2/mingw53_32/lib/Qt5WebSockets.prl \
 		C:/DatosMios/QT/5.11.2/mingw53_32/lib/Qt5Network.prl \
+		C:/DatosMios/QT/5.11.2/mingw53_32/lib/Qt5Xml.prl \
 		C:/DatosMios/QT/5.11.2/mingw53_32/lib/Qt5Core.prl
 	$(QMAKE) -o Makefile ..\qt_servicio_tecnico\servicio_tecnico.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 C:/DatosMios/QT/5.11.2/mingw53_32/mkspecs/features/spec_pre.prf:
@@ -391,6 +392,7 @@ C:/DatosMios/QT/5.11.2/mingw53_32/mkspecs/features/lex.prf:
 C:/DatosMios/QT/5.11.2/mingw53_32/lib/Qt5Sql.prl:
 C:/DatosMios/QT/5.11.2/mingw53_32/lib/Qt5WebSockets.prl:
 C:/DatosMios/QT/5.11.2/mingw53_32/lib/Qt5Network.prl:
+C:/DatosMios/QT/5.11.2/mingw53_32/lib/Qt5Xml.prl:
 C:/DatosMios/QT/5.11.2/mingw53_32/lib/Qt5Core.prl:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ..\qt_servicio_tecnico\servicio_tecnico.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"

@@ -14,7 +14,7 @@ WebSocket::WebSocket() : m_pWebSocketServer(new QWebSocketServer(QStringLiteral(
     *m_port = conf.at(1).toUShort();
     if (m_pWebSocketServer->listen(QHostAddress::Any, *m_port))
     {
-        qDebug() << "Server iniciado en puerto:" <<*m_port;
+        qDebug() << "WS iniciado en puerto:" <<*m_port;
         connect(m_pWebSocketServer, &QWebSocketServer::newConnection, this, &WebSocket::onNewConnection);
         connect(m_pWebSocketServer, &QWebSocketServer::closed, this, &WebSocket::closed);
     } // end if
@@ -45,9 +45,12 @@ void WebSocket::onNewConnection()
 
 void WebSocket::processTextMessage(QString message)
 {
+    emit mensajeRecibido(message);
     QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
+
     qDebug() << "De:" << pClient << "Mensaje recibido:" << message;
 }
+
 
 
 void WebSocket::socketDisconnected()

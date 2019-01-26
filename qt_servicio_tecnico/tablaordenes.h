@@ -12,6 +12,8 @@ public:
     TablaOrdenes();
     ~TablaOrdenes();
     void crearOrden();
+    //QString cliente, QUuid estados_reparacion,
+    //QUuid tecnicos, QUuid dispositivos, QUuid listado_tiendas
 };
 
 #endif // TABLAORDENES_H

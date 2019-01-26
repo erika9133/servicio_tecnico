@@ -7,7 +7,7 @@
 
 TablaOrdenes::TablaOrdenes()
 {
-    // m_db;
+    //m_db;
 }
 
 TablaOrdenes::~TablaOrdenes(){}
@@ -15,17 +15,16 @@ TablaOrdenes::~TablaOrdenes(){}
 
 void TablaOrdenes::crearOrden()
 {
-    /*Test*/
-
-    /*QString cliente, QUuid estados_reparacion,
-                              QUuid tecnicos, QUuid dispositivos, QUuid listado_tiendas*/
-    QString cliente = "juan";
+    //Test*QString cliente, QUuid estados_reparacion,
+    //QUuid tecnicos, QUuid dispositivos, QUuid listado_tiendas
+    QString cliente = "pacooo";
     QUuid estados_reparacion = "82bb727f-29db-4547-8488-6c30c2dfcc9b";
     QUuid tecnicos = "27e9cc28-56fb-4967-b72e-1615dc614559";
-    QUuid dispositivos = "920dddb7-3cf5-4e9a-8e2d-4426b1e8973a";
+     QUuid dispositivos = "920dddb7-3cf5-4e9a-8e2d-4426b1e8973a";
     QUuid listado_tiendas = "a91d6f79-330e-4fa5-a27c-fae47d994b09";
 
-    BBDD::connect();
+
+    connect();
     QUuid uuid_ordenes = Utils::generarUUID();
     m_db->transaction();
     QSqlQuery query("INSERT INTO ordenes ("
@@ -44,22 +43,22 @@ void TablaOrdenes::crearOrden()
                     "'"+listado_tiendas.toString()+"'"
                     ")", *m_db);
     m_db->commit();
+    QString lastError = query.lastError().text().trimmed();
+    if (!lastError.isEmpty())
+    {
+     qDebug() << lastError;
+
+    }
+    disconnet();
+
 
     //QSqlQuery query1("INSERT INTO tablatest (nombre) VALUES ('x')",m_db);
-    // query.exec("INSERT INTO tabla1 (id_tabla1,nombre_tabla11,uuid_tabla1) VALUES ('"+QString::number(x+10)+"','"+QString::number(x)+"','"+uuid.toString()+"')");
-    /* QString lastError = query.lastError().text().trimmed();
+    // query.exec("INSERT INTO tabla1 (id_tabla1,nombre_tabla11,uuid_tabla1)
+    //ALUES ('"+QString::number(x+10)+"','"+QString::number(x)+"','"+uuid.toString()+"')");
 
 
-
-    //query.exec("INSERT INTO tabla1 (id_tabla1,nombre_tabla11,uuid_tabla1) VALUES ('"+QString::number(x+10)+"','"+QString::number(x)+"','"+uuid.toString()+"')");
-
-     if (!lastError.isEmpty())
-     {
-      qDebug() << lastError;
-
-     }*/
-
-
+    //query.exec("INSERT INTO tabla1 (id_tabla1,nombre_tabla11,uuid_tabla1)
+            //VALUES ('"+QString::number(x+10)+"','"+QString::number(x)+"','"+uuid.toString()+"')");
 // QSqlQuery query("SELECT * FROM marcas");
 
 /* while(query.next())

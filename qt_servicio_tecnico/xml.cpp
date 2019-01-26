@@ -1,56 +1,85 @@
 #include <QDebug>
+
+#include <QtXml>
+#include <QXmlSimpleReader>
+#include <QXmlDefaultHandler>
 #include <iostream>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
+
 #include "xml.h"
+#include "utils.h"
 
 XML::XML()
 {
-    std::string archivoXML = "test_external.xml";
-    validaXML(archivoXML.c_str());
+    //std::string archivoXML = "test_external.xml";
+   // validaXML(archivoXML.c_str());
 }
 
 
 XML::~XML(){}
 
-
-
-bool XML::validaXML(const char *archivoXML)
+void XML::GenerarOrden(QUuid id)
 {
-    bool devolver;
-    /*
-    bool result = false;
+    QString nombre = "Orden_"+id.toString();
+    QString archivo =nombre+".xml";
 
-    /// Crea el contexto del analizador.
-    xmlParserCtxtPtr ctxt = xmlNewParserCtxt();
-    if (ctxt == NULL)
-    {
-        std::cout << "Error al crear el contexto del analizador." << std::endl;
-        return false;
-    } // end if
+    Utils::crearArchivo(archivo);
+    QStringList xmldoc = {"<documento>",
+                          "<id>"+nombre+"</id>",
+                          "</documento>"
+                          ""};
+   Utils::escribir(archivo,xmldoc);
 
-    /// Analiza el archivo activando la opción de validación DTD.
-    xmlDocPtr doc = xmlCtxtReadFile(ctxt, archivoXML, NULL, XML_PARSE_DTDVALID);
-    if (doc == NULL)
-    {
-        std::cout << "Error al analizar el archivo." << std::endl;
-        return false;
-    } // end if
+}
 
-    /// Comprueba la validez del XML.
-    if (ctxt->valid == 0)
-    {
-        std::cout << "El archivo XML no es valido." << std::endl;
-    } else {
-        std::cout << "El archivo XML es valido." << std::endl;
-        result = true;
-    } // end if
+void XML::RecibirOrden()
+{
 
-    /// Libera memoria.
-    xmlFreeDoc(doc);
-    xmlFreeParserCtxt(ctxt);
-    */
-    return devolver;
 }
 
 
+bool XML::validaXML(QString *archivoXML)
+{
+
+      qDebug() << "entra." ;
+    bool result = false;
+
+        /// Crea el contexto del analizador.
+        xmlParserCtxtPtr ctxt = xmlNewParserCtxt();
+        if (ctxt == NULL)
+        {
+            qDebug() << "Error al crear el contexto del analizador." ;
+            return false;
+        } // end if
+
+        /// Analiza el archivo activando la opción de validación DTD.
+        xmlDocPtr doc = xmlCtxtReadFile(ctxt, archivoXML->toStdString().c_str(), NULL, XML_PARSE_DTDVALID);
+        if (doc == NULL)
+        {
+              qDebug() << "Error al analizar el archivo." ;
+            return false;
+        } // end if
+
+        /// Comprueba la validez del XML.
+        if (ctxt->valid == 0)
+        {
+              qDebug() << "El archivo XML no es valido." ;
+        } else {
+              qDebug() << "El archivo XML es valido." ;
+
+        } // end if
+
+        /// Libera memoria.
+        xmlFreeDoc(doc);
+        xmlFreeParserCtxt(ctxt);
+
+        return result;
+
+}
+
+int XML::tipo(QString *archivoXML)
+{
+
+return 3;
+}

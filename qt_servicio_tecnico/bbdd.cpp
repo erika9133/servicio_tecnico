@@ -5,6 +5,7 @@
 
 BBDD::BBDD()
 {
+    disconnet();
     /*
      * 1 QString driver
      * 2 QString host
@@ -37,11 +38,8 @@ BBDD::BBDD()
 
 BBDD::~BBDD()
 {
-    if(*m_bdStatus)
-    {
         *m_bdStatus = false;
         disconnet();
-    }
 }
 
 void BBDD::connect()

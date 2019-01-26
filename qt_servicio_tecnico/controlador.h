@@ -9,13 +9,17 @@
 #include "tablatecnicos.h"
 #include "tablaordenes.h"
 
-class Controlador
+class Controlador : public QObject
 {
+    Q_OBJECT
+
 public:
     Controlador();
     ~Controlador();
     void iniciarBBDD();
     void iniciarWS();
+private slots:
+    void mensajeEntrante(QString message);
 private:
    BBDD *m_bbdd;
    WebSocket *m_ws;

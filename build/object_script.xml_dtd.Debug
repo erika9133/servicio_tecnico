@@ -1,0 +1,13 @@
+INPUT(
+./debug\main.o
+./debug\tablaordenes.o
+./debug\bbdd.o
+./debug\controlador.o
+./debug\websockets.o
+./debug\utils.o
+./debug\xml.o
+./debug\tablatecnicos.o
+./debug\moc_controlador.o
+./debug\moc_websockets.o
+./debug\moc_xml.o
+);

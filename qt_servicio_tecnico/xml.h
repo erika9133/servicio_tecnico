@@ -2,13 +2,30 @@
 #define XML_H
 
 #include <QObject>
+#include <QStringList>
+#include <QUuid>
+#include <QFile>
+#include <QXmlInputSource>
+#include <QDomDocument>
 
-class XML
+
+
+class XML : public QObject
 {
+    Q_OBJECT
+
 public:
     XML();
    ~XML();
-    bool validaXML(const char *archivoXM);
+    QStringList *m_dtd;
+    void GenerarOrden(QUuid id);
+    void RecibirOrden();
+    bool validaXML(QString *archivoXML);
+    int tipo(QString *archivoXML);
+
+
+
+
 };
 
 #endif // XML_H
