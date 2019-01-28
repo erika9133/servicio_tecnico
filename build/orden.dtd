@@ -1,0 +1,4 @@
+<!ELEMENT orden (tienda,cliente,dispositivo)>
+<!ELEMENT tienda (#PCDATA)>
+<!ELEMENT cliente (#PCDATA)>
+<!ELEMENT dispositivo (#PCDATA)>

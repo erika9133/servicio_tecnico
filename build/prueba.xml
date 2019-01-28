@@ -1,6 +1,5 @@
-
 <?xml version="1.0" encoding="UTF-8"?> 
-<!DOCTYPE recetas SYSTEM "http://www.3r1k4.com/dtd/orden.dtd"> 
+<!DOCTYPE orden SYSTEM "http://www.3r1k4.com/dtd/orden.dtd"> 
 <orden>
     <tienda>mm</tienda>
     <cliente>1234567A</cliente>

@@ -2,16 +2,12 @@
 #include <QDebug>
 #include "controlador.h"
 
+
 int main(int argc, char *argv[])
 {
-    //QCoreApplication a(argc, argv);
+    QCoreApplication a(argc, argv);
+    Controlador * ctl = new Controlador();
 
-    qDebug() << "entra." ;
-    //Controlador * ctl = new Controlador();
-    //ctl->iniciarBBDD();
-    //ctl->iniciarWS();
-
-
-    //return a.exec();
+   return a.exec();
 
 }

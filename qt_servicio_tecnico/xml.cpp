@@ -42,7 +42,6 @@ void XML::RecibirOrden()
 bool XML::validaXML(QString *archivoXML)
 {
 
-      qDebug() << "entra." ;
     bool result = false;
 
         /// Crea el contexto del analizador.
@@ -79,7 +78,5 @@ bool XML::validaXML(QString *archivoXML)
 }
 
 int XML::tipo(QString *archivoXML)
-{
 
-return 3;
-}
+{

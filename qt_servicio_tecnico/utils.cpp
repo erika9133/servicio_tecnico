@@ -12,7 +12,7 @@ Utils::Utils()
 
 Utils::~Utils(){}
 
-QStringList Utils::leer(QString archivo)
+QStringList Utils::leerArchivoLineaPorLinea(QString archivo)
 {
     QStringList lista;
     std::ifstream archivoTempI;

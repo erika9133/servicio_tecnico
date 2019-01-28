@@ -6,8 +6,8 @@
 #include "bbdd.h"
 #include "websockets.h"
 #include "xml.h"
-#include "tablatecnicos.h"
-#include "tablaordenes.h"
+#include "consultas.h"
+
 
 class Controlador : public QObject
 {
@@ -19,13 +19,13 @@ public:
     void iniciarBBDD();
     void iniciarWS();
 private slots:
-    void mensajeEntrante(QString message);
+    void procesarPeticion(mensajeEntrante m);
 private:
    BBDD *m_bbdd;
    WebSocket *m_ws;
    XML *m_xml;
-   TablaTecnicos *m_tablaTecnicos;
-   TablaOrdenes *m_tablaOrdenes;
+   Consultas *m_consultas;
+
 };
 
 #endif // CONTROLADOR_H

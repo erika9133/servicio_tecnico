@@ -13,16 +13,16 @@ public:
     ~BBDD();
      void connect();
      void disconnet();
-     std::unique_ptr<bool> m_bdStatus;
+     bool m_bdStatus;
 protected:
      std::unique_ptr<QSqlDatabase> m_db;
 private:
-     std::unique_ptr<QString> m_driver;
-     std::unique_ptr<QString> m_host;
-     std::unique_ptr<quint16> m_port;
-     std::unique_ptr<QString> m_databaseName;
-     std::unique_ptr<QString> m_username;
-     std::unique_ptr<QString> m_password;
+     QString m_driver;
+     QString m_host;
+     int m_port;
+     QString m_databaseName;
+     QString m_username;
+     QString m_password;
 };
 
 #endif // BBDD_H

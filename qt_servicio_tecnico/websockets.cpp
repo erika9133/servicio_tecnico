@@ -4,10 +4,9 @@
 #include "websockets.h"
 #include "utils.h"
 
-
 WebSocket::WebSocket() : m_pWebSocketServer(new QWebSocketServer(QStringLiteral("Test Server")
                                                                  ,QWebSocketServer::NonSecureMode, this)){
-    QStringList conf = Utils::leer("configWS.txt");
+    QStringList conf = Utils::leerArchivoLineaPorLinea("configWS.txt");
     m_host = new QString();
     m_port = new quint16();
     *m_host = conf.at(0);
@@ -45,12 +44,19 @@ void WebSocket::onNewConnection()
 
 void WebSocket::processTextMessage(QString message)
 {
-    emit mensajeRecibido(message);
-    QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
 
+    QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
+    mensajeEntrante m;
+    m.cliente = pClient;
+    m.message = message;
+    emit mensajeRecibido(m);
     qDebug() << "De:" << pClient << "Mensaje recibido:" << message;
 }
 
+void WebSocket::emitTextMessage(QString message, QWebSocket *pClient)
+{
+    pClient->sendTextMessage(message);
+}
 
 
 void WebSocket::socketDisconnected()

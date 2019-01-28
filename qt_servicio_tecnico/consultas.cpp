@@ -1,26 +1,25 @@
 #include <QSqlQuery>
 #include <QSql>
-#include "tablaordenes.h"
+#include "consultas.h"
 #include "utils.h"
 
-
-
-TablaOrdenes::TablaOrdenes()
+Consultas::Consultas()
 {
-    //m_db;
+   // m_db = *m_db;
+   // *m_db = QSqlDatabase::addDatabase("QPSQL");
 }
 
-TablaOrdenes::~TablaOrdenes(){}
+Consultas::~Consultas(){}
 
 
-void TablaOrdenes::crearOrden()
+void Consultas::Consultas()
 {
     //Test*QString cliente, QUuid estados_reparacion,
     //QUuid tecnicos, QUuid dispositivos, QUuid listado_tiendas
     QString cliente = "pacooo";
     QUuid estados_reparacion = "82bb727f-29db-4547-8488-6c30c2dfcc9b";
     QUuid tecnicos = "27e9cc28-56fb-4967-b72e-1615dc614559";
-     QUuid dispositivos = "920dddb7-3cf5-4e9a-8e2d-4426b1e8973a";
+    QUuid dispositivos = "920dddb7-3cf5-4e9a-8e2d-4426b1e8973a";
     QUuid listado_tiendas = "a91d6f79-330e-4fa5-a27c-fae47d994b09";
 
 
@@ -67,5 +66,37 @@ void TablaOrdenes::crearOrden()
       qDebug() << "nombre_marcas" << query.value(1).toString();
  }
 // db.commit();*/
+}
+QStringList Consultas::devolverDispositivosAceptados()
+{
+    QStringList devolver;
+    connect();
+    m_db->transaction();
+    QSqlQuery query("SELECT"
+                    "dispositivos.uuid_dispositivos, "
+                    "dispositivos.nombre_dispositivos,"
+                    "marcas.nombre_marcas "
+                    "FROM dispositivos JOIN marcas ON "
+                    "dispositivos.uuid_marcas = "
+                    "marcas.uuid_marcas;", *m_db);
+
+
+    QString lastError = query.lastError().text().trimmed();
+    if (!lastError.isEmpty())
+    {
+     qDebug() << lastError;
+
+    }else{
+        int i = 0;
+        while(query.next())
+        {
+            devolver << query.value(i).toString();
+            i++;
+        }
+    }
+
+    m_db->commit();
+    disconnet();
+    return devolver;
 }
 

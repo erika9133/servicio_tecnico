@@ -9,6 +9,11 @@
 class QWebSocketServer;
 class QWebSocket;
 
+struct mensajeEntrante {
+  QString message;
+  QWebSocket *cliente;
+};
+
 class WebSocket : public QObject
 {
     Q_OBJECT
@@ -17,21 +22,23 @@ public:
     explicit WebSocket();
     ~WebSocket();
     bool *m_wsStatus;
+    QList<QWebSocket *> m_clients;
 
 signals:
     void closed();
-    void mensajeRecibido(QString message);
+    void mensajeRecibido(mensajeEntrante m);
 
 private slots:
     void onNewConnection();
     void processTextMessage(QString message);
+    void emitTextMessage(QString message, QWebSocket *pClient);
     void socketDisconnected();
 
 private:
     QString *m_host = new QString();
     quint16 *m_port = new quint16();
     QWebSocketServer *m_pWebSocketServer;
-    QList<QWebSocket *> m_clients;
+
 };
 
 #endif // WEBSOCKETS_H

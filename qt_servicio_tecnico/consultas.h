@@ -1,19 +1,20 @@
-#ifndef TABLAORDENES_H
-#define TABLAORDENES_H
+#ifndef CONSULTAS_H
+#define CONSULTAS_H
 
 #include <QObject>
 #include <QString>
 #include <QUuid>
 #include "bbdd.h"
 
-class TablaOrdenes : protected BBDD
+class Consultas : protected BBDD
 {
 public:
-    TablaOrdenes();
-    ~TablaOrdenes();
+    Consultas();
+    ~Consultas();
     void crearOrden();
+    QStringList devolverDispositivosAceptados();
     //QString cliente, QUuid estados_reparacion,
     //QUuid tecnicos, QUuid dispositivos, QUuid listado_tiendas
 };
 
-#endif // TABLAORDENES_H
+#endif // CONSULTAS_H

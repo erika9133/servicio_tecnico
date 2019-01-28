@@ -12,7 +12,7 @@ class Utils
 public:
     Utils();
     ~Utils();
-    static QStringList leer(QString archivo);
+    static QStringList leerArchivoLineaPorLinea(QString archivo);
     static void escribir(QString archivo,QString linea);
     static void escribir(QString archivo,QStringList lista);
     static void crearArchivo(QString archivo);
