@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_WebSocket_t {
-    QByteArrayData data[11];
-    char stringdata0[132];
+    QByteArrayData data[13];
+    char stringdata0[150];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -35,19 +35,21 @@ QT_MOC_LITERAL(0, 0, 9), // "WebSocket"
 QT_MOC_LITERAL(1, 10, 6), // "closed"
 QT_MOC_LITERAL(2, 17, 0), // ""
 QT_MOC_LITERAL(3, 18, 15), // "mensajeRecibido"
-QT_MOC_LITERAL(4, 34, 7), // "message"
-QT_MOC_LITERAL(5, 42, 15), // "clienteRecibido"
-QT_MOC_LITERAL(6, 58, 11), // "QWebSocket*"
-QT_MOC_LITERAL(7, 70, 7), // "cliente"
-QT_MOC_LITERAL(8, 78, 15), // "onNewConnection"
-QT_MOC_LITERAL(9, 94, 18), // "processTextMessage"
-QT_MOC_LITERAL(10, 113, 18) // "socketDisconnected"
+QT_MOC_LITERAL(4, 34, 15), // "mensajeEntrante"
+QT_MOC_LITERAL(5, 50, 1), // "m"
+QT_MOC_LITERAL(6, 52, 15), // "onNewConnection"
+QT_MOC_LITERAL(7, 68, 18), // "processTextMessage"
+QT_MOC_LITERAL(8, 87, 7), // "message"
+QT_MOC_LITERAL(9, 95, 15), // "emitTextMessage"
+QT_MOC_LITERAL(10, 111, 11), // "QWebSocket*"
+QT_MOC_LITERAL(11, 123, 7), // "pClient"
+QT_MOC_LITERAL(12, 131, 18) // "socketDisconnected"
 
     },
     "WebSocket\0closed\0\0mensajeRecibido\0"
-    "message\0clienteRecibido\0QWebSocket*\0"
-    "cliente\0onNewConnection\0processTextMessage\0"
-    "socketDisconnected"
+    "mensajeEntrante\0m\0onNewConnection\0"
+    "processTextMessage\0message\0emitTextMessage\0"
+    "QWebSocket*\0pClient\0socketDisconnected"
 };
 #undef QT_MOC_LITERAL
 
@@ -62,26 +64,26 @@ static const uint qt_meta_data_WebSocket[] = {
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       3,       // signalCount
+       2,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
        1,    0,   44,    2, 0x06 /* Public */,
        3,    1,   45,    2, 0x06 /* Public */,
-       5,    1,   48,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       8,    0,   51,    2, 0x08 /* Private */,
-       9,    1,   52,    2, 0x08 /* Private */,
-      10,    0,   55,    2, 0x08 /* Private */,
+       6,    0,   48,    2, 0x08 /* Private */,
+       7,    1,   49,    2, 0x08 /* Private */,
+       9,    2,   52,    2, 0x08 /* Private */,
+      12,    0,   57,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QString,    4,
-    QMetaType::Void, 0x80000000 | 6,    7,
+    QMetaType::Void, 0x80000000 | 4,    5,
 
  // slots: parameters
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QString,    4,
+    QMetaType::Void, QMetaType::QString,    8,
+    QMetaType::Void, QMetaType::QString, 0x80000000 | 10,    8,   11,
     QMetaType::Void,
 
        0        // eod
@@ -94,10 +96,10 @@ void WebSocket::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->closed(); break;
-        case 1: _t->mensajeRecibido((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 2: _t->clienteRecibido((*reinterpret_cast< QWebSocket*(*)>(_a[1]))); break;
-        case 3: _t->onNewConnection(); break;
-        case 4: _t->processTextMessage((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 1: _t->mensajeRecibido((*reinterpret_cast< mensajeEntrante(*)>(_a[1]))); break;
+        case 2: _t->onNewConnection(); break;
+        case 3: _t->processTextMessage((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 4: _t->emitTextMessage((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< QWebSocket*(*)>(_a[2]))); break;
         case 5: _t->socketDisconnected(); break;
         default: ;
         }
@@ -111,16 +113,9 @@ void WebSocket::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
             }
         }
         {
-            typedef void (WebSocket::*_t)(QString );
+            typedef void (WebSocket::*_t)(mensajeEntrante );
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&WebSocket::mensajeRecibido)) {
                 *result = 1;
-                return;
-            }
-        }
-        {
-            typedef void (WebSocket::*_t)(QWebSocket * );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&WebSocket::clienteRecibido)) {
-                *result = 2;
                 return;
             }
         }
@@ -170,17 +165,10 @@ void WebSocket::closed()
 }
 
 // SIGNAL 1
-void WebSocket::mensajeRecibido(QString _t1)
+void WebSocket::mensajeRecibido(mensajeEntrante _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
-}
-
-// SIGNAL 2
-void WebSocket::clienteRecibido(QWebSocket * _t1)
-{
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
-    QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

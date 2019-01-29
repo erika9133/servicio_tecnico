@@ -30,31 +30,26 @@ void Controlador::procesarPeticion(mensajeEntrante m)
 
    /*QString temp = "temp_"+Utils::generarUUID().toString()+".xml";
     Utils::crearArchivo(temp);
-    Utils::escribir(temp,*m_mensajeTemp);
-   // validar = m_xml->validaXML(&temp);
+    Utils::escribir(temp,*m_mensajeTemp);*/
+   validar = m_xml->validaXML(&m.message);
 
     if(validar)
     {
-        int tipo = m_xml->tipo(&temp);
+        int tipo = m_xml->tipo(&m.message);
         switch(tipo)
         {
         case 1:
 
             //Peticion de dispositivos
-            QStringList dispositivos = m_tablaDispositivos->devolverDispositivosAceptados();
+            QStringList dispositivos = m_consultas->devolverDispositivosAceptados();
+
             //parsear a xml y responder
            // m_ws->processTextMessage();
 
-            break;
-        case 2:
-            //Peticion de orden
 
-            break;
-         default:
-            break;
         }
 
-    }*/
+    }
 }
 
 

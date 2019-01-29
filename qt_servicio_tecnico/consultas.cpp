@@ -12,7 +12,7 @@ Consultas::Consultas()
 Consultas::~Consultas(){}
 
 
-void Consultas::Consultas()
+void Consultas::crearOrden()
 {
     //Test*QString cliente, QUuid estados_reparacion,
     //QUuid tecnicos, QUuid dispositivos, QUuid listado_tiendas
@@ -67,6 +67,7 @@ void Consultas::Consultas()
  }
 // db.commit();*/
 }
+
 QStringList Consultas::devolverDispositivosAceptados()
 {
     QStringList devolver;
