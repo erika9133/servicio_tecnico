@@ -1,0 +1,5 @@
+<!ELEMENT servicio_tecnico (action,tienda,cliente,dispositivo)>
+<!ELEMENT action (#PCDATA)>
+<!ELEMENT tienda (#PCDATA)>
+<!ELEMENT cliente (#PCDATA)>
+<!ELEMENT dispositivo (#PCDATA)>
