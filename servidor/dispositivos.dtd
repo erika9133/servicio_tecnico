@@ -1,0 +1,3 @@
+<!ELEMENT servicio_tecnico (action,consulta)>
+<!ELEMENT action (#PCDATA)>
+<!ELEMENT consulta (#PCDATA)>

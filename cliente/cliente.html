@@ -250,15 +250,45 @@
     }
     function consultarDispositivos()
     {
-        var busqueda = document.getElementById("dispositivo").value;
-        var XML = new XMLWriter();
-        XML.BeginNode("?xml version='1.0' encoding='UTF-8'?>");
-        XML.BeginNode("!DOCTYPE recetas SYSTEM 'http://www.3r1k4.com/dtd/dispositivos.dtd'>");
-        XML.Node("dispositivos", busqueda);
-        writeToScreen(XML);
-        doSend(XML)
-        return false; //inline, evita submit
+    
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                myFunction(this);
+            }
+        };
+        xhttp.open("GET", "books.xml", true);
+        xhttp.send();
 
+        function myFunction(xml) {
+            var x, y, i, newElement, txt, xmlDoc;
+            xmlDoc = xml.responseXML;
+            newElement = xmlDoc.createElement("edition");
+            x = xmlDoc.getElementsByTagName("book")[0]
+            x.appendChild(newElement);
+
+        // Display all elements
+            xlen = x.childNodes.length;
+            y = x.firstChild;
+            txt = "";
+            for (i = 0; i < xlen; i++) {
+                if (y.nodeType == 1) {
+                    txt += y.nodeName + "<br>";
+                }
+                y = y.nextSibling;
+            }
+            document.getElementById("demo").innerHTML = txt;
+        }
+                    
+                var busqueda = document.getElementById("dispositivo").value;
+                
+                var XML = new XMLWriter();
+                XML.BeginNode("?xml version='1.0' encoding='UTF-8'?>");
+                XML.BeginNode("!DOCTYPE recetas SYSTEM 'http://www.3r1k4.com/dtd/dispositivos.dtd'>");
+                XML.Node("dispositivos", busqueda);
+                writeToScreen(XML.toString());
+                doSend(XML);
+            
        
     }
     function generarXML()
@@ -286,21 +316,21 @@
 </script>
 </head>
 <body>
+       
         <header>Servicio Tecnico SL</header>
         <form id=form class="topBefore">
             <input id="dispositivo" type="text" placeholder="CONSULTAR DISPOSITIVO">
             
-            <input id="submit" type="submit" value="Buscar!" onclick="return consultarDispositivos();">
+            <button id=submit onclick="consultarDispositivos()">subir</button>
+           
         </form>
-
-        <div id=salidaDispositivos><div id="output"></div></div>
-
+        <div id="output" class="topBefore"></div>
+        <input id="submit" type="submit" value="Buscar!" onclick="return consultarDispositivos();">
         <form id=form class="topBefore">
             <input id="name" type="text" placeholder="Dispositivo">
             <input id="email" type="text" placeholder="Cliente">
             <textarea id="message" type="text" placeholder="MESSAGE"></textarea>
             <input id="submit" type="submit" value="GO!">
-   
         </form>
 </body>
 </html>
