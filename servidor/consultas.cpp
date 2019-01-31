@@ -18,8 +18,8 @@ void Consultas::crearOrden(QString cliente, QUuid estados_reparacion,
     //Test*
     //QString cliente = "pacooo";
     //test se anyaden luego
-    estados_reparacion = "82bb727f-29db-4547-8488-6c30c2dfcc9b";
-    tecnicos = "27e9cc28-56fb-4967-b72e-1615dc614559";
+    //estados_reparacion = "82bb727f-29db-4547-8488-6c30c2dfcc9b";
+    //tecnicos = "27e9cc28-56fb-4967-b72e-1615dc614559";
     //QUuid dispositivos = "920dddb7-3cf5-4e9a-8e2d-4426b1e8973a";
     //QUuid listado_tiendas = "a91d6f79-330e-4fa5-a27c-fae47d994b09";
 
@@ -96,6 +96,33 @@ QStringList Consultas::devolverDispositivosAceptados()
         }
     }
 
+    m_db->commit();
+    disconnet();
+    return devolver;
+}
+
+QUuid Consultas::devolverUuid(QString registro, QString tabla)
+{
+    QUuid devolver;
+    connect();
+    m_db->transaction();
+    QSqlQuery query("SELECT "
+                    "uuid_"+tabla+
+                    " FROM "
+                    +tabla+
+                    " WHERE "
+                    "nombre_"+tabla+
+                    " = "
+                    +registro+
+                    " ;", *m_db);
+    QString lastError = query.lastError().text().trimmed();
+    if (!lastError.isEmpty())
+    {
+     qDebug() << lastError;
+
+    }else{
+        devolver = query.value(0).toUuid();
+    }
     m_db->commit();
     disconnet();
     return devolver;

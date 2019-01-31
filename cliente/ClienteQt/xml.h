@@ -9,7 +9,7 @@ class XML
 public:
     XML();
     QString generarConsultaDispositivos(QString consulta);
-    QString enerarOrden(QString tienda,QString cliente,QString dispositivo);
+    QString generarOrden(QString tienda,QString cliente,QString dispositivo);
 };
 
 #endif // XML_H

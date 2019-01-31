@@ -19,7 +19,33 @@ XML::XML()
 
 XML::~XML(){}
 
-void XML::GenerarOrden(QUuid id)
+
+QStringList XML::procesarOrden(QStringList *orden)
+{
+    QString tienda;
+    QString cliente;
+    QString dispositivo;
+    QStringList devolver;
+
+    for(int i; i < orden->size(); i++)
+    {
+        QString temp = orden->at(i);
+         if(QString::compare(temp, "<tienda>")){
+             tienda = orden->at(i+1);
+         }else if(QString::compare(temp, "<cliente>")){
+             cliente = orden->at(i+1);
+         }else if(QString::compare(temp, "<dispositivo>")){
+             dispositivo = orden->at(i+1);
+         }
+    }
+    devolver.append(cliente);
+    devolver.append(tienda);
+    devolver.append(dispositivo);
+    return devolver;
+}
+
+//No se usa aun, sirve para pedir gestionar una orden a XML de vuelta
+void XML::generarOrden(QUuid id)
 {
     /* En formato de archivo
     QString nombre = "Orden_"+id.toString();
@@ -36,12 +62,6 @@ void XML::GenerarOrden(QUuid id)
 
 
 }
-
-void XML::RecibirOrden()
-{
-
-}
-
 
 bool XML::validaXML(QString *archivoXML)
 {
@@ -81,8 +101,26 @@ bool XML::validaXML(QString *archivoXML)
 
 }
 
-int XML::tipo(QString *archivoXML)
+int XML::tipo(QString *recibo)
 {
+
+    int devolver = 0;
+    for(int i; i < recibo->size(); i++)
+    {
+         if(QString::compare(recibo->at(i), "<action>"))
+         {
+             if(QString::compare(recibo->at(i+1), "dispositivos"))
+             {
+                 devolver = 1;
+             }else if(QString::compare(recibo->at(i+1), "orden"))
+             {
+                 devolver = 2;
+             }
+         }
+    }
+    return devolver;
+    /*
+     * pendiente de revisar. ejemplo de DOM
     //The QDomDocument class represents an XML document.
     QDomDocument xmlBOM;
     // Load xml file as raw data
@@ -155,6 +193,6 @@ int XML::tipo(QString *archivoXML)
 
 
 
-
+    */
 
 }

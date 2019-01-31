@@ -2,6 +2,7 @@
 #define XML_H
 
 #include <QObject>
+#include <QString>
 #include <QStringList>
 #include <QUuid>
 #include <QFile>
@@ -18,10 +19,10 @@ public:
     XML();
    ~XML();
     QStringList *m_dtd;
-    void GenerarOrden(QUuid id);
-    void RecibirOrden();
+    void generarOrden(QUuid id);
+    QStringList procesarOrden(QStringList *orden);
     bool validaXML(QString *archivoXML);
-    int tipo(QString *archivoXML);
+    int tipo(QString *recibo);
 
 
 

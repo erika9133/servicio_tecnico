@@ -14,6 +14,7 @@ public:
     void crearOrden(QString cliente, QUuid estados_reparacion,
                     QUuid tecnicos, QUuid dispositivos, QUuid listado_tiendas);
     QStringList devolverDispositivosAceptados();
+    QUuid devolverUuid(QString registro, QString tabla);
     //QString cliente, QUuid estados_reparacion,
     //QUuid tecnicos, QUuid dispositivos, QUuid listado_tiendas
 };

@@ -33,7 +33,7 @@ void MainWindow::reciveMessage(QString message)
 
 void MainWindow::on_orden_clicked()
 {
-    QString orden = m_xml->enerarOrden(ui->tienda->text(),ui->cliente->text(),ui->listWidget->selectedItems().at(0));
+    QString orden = m_xml->generarOrden(ui->tienda->text(),ui->cliente->text(),ui->listWidget->selectedItems().at(0)->text());
     m_cliente->sendMessage(orden);
 }
 
