@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QString>
-#include "bbdd.h"
 #include "websockets.h"
 #include "xml.h"
 #include "consultas.h"

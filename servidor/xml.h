@@ -9,8 +9,6 @@
 #include <QXmlInputSource>
 #include <QDomDocument>
 
-
-
 class XML : public QObject
 {
     Q_OBJECT
@@ -18,11 +16,13 @@ class XML : public QObject
 public:
     XML();
    ~XML();
-    QStringList *m_dtd;
+    //QStringList *m_dtd;
     void generarOrden(QUuid id);
     QStringList procesarOrden(QStringList *orden);
     bool validaXML(QString *archivoXML);
-    int tipo(QString *recibo);
+    int devolverTipo(QString *archivoXML);
+    QString devolverConsulta(QString *archivoXML);
+    QStringList procesarXML(QString *archivoXML);
 
 
 

@@ -1,16 +1,18 @@
 #include <QSqlQuery>
 #include <QSql>
+#include <QDebug>
 #include "consultas.h"
 #include "utils.h"
 
 Consultas::Consultas()
 {
-   // m_db = *m_db;
-   // *m_db = QSqlDatabase::addDatabase("QPSQL");
+    m_bbdd = new BBDD();
 }
 
-Consultas::~Consultas(){}
-
+Consultas::~Consultas()
+{
+    delete m_bbdd;
+}
 
 void Consultas::crearOrden(QString cliente, QUuid estados_reparacion,
                            QUuid tecnicos, QUuid dispositivos, QUuid listado_tiendas)
@@ -24,9 +26,9 @@ void Consultas::crearOrden(QString cliente, QUuid estados_reparacion,
     //QUuid listado_tiendas = "a91d6f79-330e-4fa5-a27c-fae47d994b09";
 
 
-    connect();
+    m_bbdd->connect();
+    m_bbdd->m_db->transaction();
     QUuid uuid_ordenes = Utils::generarUUID();
-    m_db->transaction();
     QSqlQuery query("INSERT INTO ordenes ("
                     "uuid_ordenes,"
                     "cliente_ordenes,"
@@ -41,71 +43,58 @@ void Consultas::crearOrden(QString cliente, QUuid estados_reparacion,
                     "'"+tecnicos.toString()+"',"
                     "'"+dispositivos.toString()+"',"
                     "'"+listado_tiendas.toString()+"'"
-                    ")", *m_db);
-    m_db->commit();
+                    ")", *m_bbdd->m_db);
+
     QString lastError = query.lastError().text().trimmed();
     if (!lastError.isEmpty())
     {
-     qDebug() << lastError;
-
+        qDebug() << lastError;
     }
-    disconnet();
-
-
-    //QSqlQuery query1("INSERT INTO tablatest (nombre) VALUES ('x')",m_db);
-    // query.exec("INSERT INTO tabla1 (id_tabla1,nombre_tabla11,uuid_tabla1)
-    //ALUES ('"+QString::number(x+10)+"','"+QString::number(x)+"','"+uuid.toString()+"')");
-
-
-    //query.exec("INSERT INTO tabla1 (id_tabla1,nombre_tabla11,uuid_tabla1)
-            //VALUES ('"+QString::number(x+10)+"','"+QString::number(x)+"','"+uuid.toString()+"')");
-// QSqlQuery query("SELECT * FROM marcas");
-
-/* while(query.next())
- {
-
-      qDebug() << "nombre_marcas" << query.value(1).toString();
- }
-// db.commit();*/
+    m_bbdd->m_db->commit();
+    m_bbdd->disconnet();
 }
 
-QStringList Consultas::devolverDispositivosAceptados()
+QStringList Consultas::devolverDispositivosAceptados(QString dispositivo)
 {
+    if (dispositivo == "")
+    {
+        dispositivo = "'%'";
+    }else{
+        dispositivo = "'%"+dispositivo+"%'";
+    }
     QStringList devolver;
-    connect();
-    m_db->transaction();
+    m_bbdd->connect();
+    m_bbdd->m_db->transaction();
     QSqlQuery query("SELECT "
-                    "dispositivos.nombre_dispositivos,"
-                    "marcas.nombre_marcas "
-                    "FROM dispositivos JOIN marcas ON "
-                    "dispositivos.uuid_marcas = "
-                    "marcas.uuid_marcas;", *m_db);
-
-
+               "nombre_dispositivos "
+               "FROM dispositivos "
+               "WHERE "
+               "nombre_dispositivos "
+               "like "
+               +dispositivo+
+               ";", *m_bbdd->m_db);
     QString lastError = query.lastError().text().trimmed();
     if (!lastError.isEmpty())
     {
-     qDebug() << lastError;
+        qDebug() << lastError;
 
     }else{
-        int i = 0;
         while(query.next())
         {
-            devolver << query.value(i).toString();
-            i++;
+            qDebug() << query.value(0).toString();
+            devolver.append(query.value(0).toString()+"\n");
         }
     }
-
-    m_db->commit();
-    disconnet();
+    m_bbdd->m_db->commit();
+    m_bbdd->disconnet();
     return devolver;
 }
 
 QUuid Consultas::devolverUuid(QString registro, QString tabla)
 {
     QUuid devolver;
-    connect();
-    m_db->transaction();
+    m_bbdd->connect();
+    m_bbdd->m_db->transaction();
     QSqlQuery query("SELECT "
                     "uuid_"+tabla+
                     " FROM "
@@ -114,7 +103,7 @@ QUuid Consultas::devolverUuid(QString registro, QString tabla)
                     "nombre_"+tabla+
                     " = "
                     +registro+
-                    " ;", *m_db);
+                    " ;", *m_bbdd->m_db);
     QString lastError = query.lastError().text().trimmed();
     if (!lastError.isEmpty())
     {
@@ -123,8 +112,8 @@ QUuid Consultas::devolverUuid(QString registro, QString tabla)
     }else{
         devolver = query.value(0).toUuid();
     }
-    m_db->commit();
-    disconnet();
+    m_bbdd->m_db->commit();
+    m_bbdd->disconnet();
     return devolver;
 }
 

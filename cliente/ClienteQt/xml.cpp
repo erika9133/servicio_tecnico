@@ -7,8 +7,9 @@ XML::XML()
 
 QString XML::generarConsultaDispositivos(QString consulta)
 {
-    QString devolver = {"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-                        "<!DOCTYPE servicio_tecnico SYSTEM \"http://www.3r1k4.com/dtd/dispositivos.dtd\">\n"
+    //Espacio separa las cadenas
+    QString devolver = {"<?xml version='1.0' encoding='UTF-8'?>\n"
+                        "<!DOCTYPE servicio_tecnico SYSTEM 'http://www.3r1k4.com/dtd/dispositivos.dtd'>\n"
                         "<servicio_tecnico>\n"
                         "<action>\n"
                         "dispositivos\n"
@@ -16,15 +17,16 @@ QString XML::generarConsultaDispositivos(QString consulta)
                         "<consulta>\n"
                         +consulta+"\n"
                         "</consulta>\n"
-                        "</servicio_tecnico>\n"
+                        "</servicio_tecnico>"
                        };
+    devolver.replace(0x27,0x22);
     return devolver;
 
 }
 QString XML::generarOrden(QString tienda,QString cliente,QString dispositivo)
 {
-    QString devolver = {"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-                        "<!DOCTYPE servicio_tecnico SYSTEM \"http://www.3r1k4.com/dtd/orden.dtd\">\n"
+    QString devolver = {"<?xml version='1.0' encoding='UTF-8'?>\n"
+                        "<!DOCTYPE servicio_tecnico SYSTEM 'http://www.3r1k4.com/dtd/orden.dtd'>\n"
                         "<servicio_tecnico>\n"
                         "<action>\n"
                         "orden\n"
@@ -40,6 +42,7 @@ QString XML::generarOrden(QString tienda,QString cliente,QString dispositivo)
                         "</dispositivo>\n"
                         "</servicio_tecnico>\n"
                        };
+    devolver.replace(0x27,0x22);
     return devolver;
 
 }

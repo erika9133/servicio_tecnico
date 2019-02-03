@@ -48,5 +48,6 @@ void Cliente::sendMessage(QString message)
 void Cliente::reciveMessage(QString message)
 {
     emit enviarMainWindow(message);
+    qDebug() << "Message recibido:" << message;
 }
 

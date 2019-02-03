@@ -1,12 +1,10 @@
 #include <QDebug>
-
 #include <QtXml>
 #include <QXmlSimpleReader>
 #include <QXmlDefaultHandler>
 #include <iostream>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
-
 #include "xml.h"
 #include "utils.h"
 
@@ -16,9 +14,7 @@ XML::XML()
    // validaXML(archivoXML.c_str());
 }
 
-
 XML::~XML(){}
-
 
 QStringList XML::procesarOrden(QStringList *orden)
 {
@@ -47,6 +43,7 @@ QStringList XML::procesarOrden(QStringList *orden)
 //No se usa aun, sirve para pedir gestionar una orden a XML de vuelta
 void XML::generarOrden(QUuid id)
 {
+    id = 0;
     /* En formato de archivo
     QString nombre = "Orden_"+id.toString();
     QString archivo =nombre+".xml";
@@ -59,12 +56,14 @@ void XML::generarOrden(QUuid id)
    Utils::escribir(archivo,xmldoc);
 
    */
-
-
 }
 
 bool XML::validaXML(QString *archivoXML)
 {
+    QString temp = *archivoXML;
+    temp.replace('\n',' ');
+    const char* validar = temp.toLatin1().data();
+    qDebug() << validar;
     //COPY PASTE, todos los derechos sin reservar
     bool result = false;
 
@@ -76,123 +75,91 @@ bool XML::validaXML(QString *archivoXML)
             return false;
         } // end if
 
+        /*
+         * Parche temporal. No consigo usar xmlCtxtReadDoc en lugar de xmlCtxtReadFile
+         * asi que se crea un archivo temporal y luego se borra. Sustituir por la lectura en memoria.
+         *
+         */
+        QStringList listatemp = procesarXML(&temp);
+        QString archivoTemp = Utils::generarUUID().toString()+".txt";
+        Utils::crearArchivo(archivoTemp);
+        Utils::escribir(archivoTemp,listatemp);
+
         /// Analiza el archivo activando la opción de validación DTD.
-        xmlDocPtr doc = xmlCtxtReadFile(ctxt, archivoXML->toStdString().c_str(), NULL, XML_PARSE_DTDVALID);
+        xmlDocPtr doc = xmlCtxtReadFile(ctxt, archivoTemp.toStdString().c_str(), NULL, XML_PARSE_DTDVALID);
+
+        //xmlDocPtr doc = xmlCtxtReadDoc(ctxt, NULL,validar,NULL, XML_PARSE_DTDVALID);
+
         if (doc == NULL)
         {
-              qDebug() << "Error al analizar el archivo." ;
+            qDebug() << "Error al analizar el archivo." ;
             return false;
         } // end if
-
         /// Comprueba la validez del XML.
         if (ctxt->valid == 0)
         {
               qDebug() << "El archivo XML no es valido." ;
         } else {
               qDebug() << "El archivo XML es valido." ;
-
+              result = true;
         } // end if
 
         /// Libera memoria.
         xmlFreeDoc(doc);
         xmlFreeParserCtxt(ctxt);
-
+        remove(archivoTemp.toStdString().c_str());
         return result;
-
 }
 
-int XML::tipo(QString *recibo)
+int XML::devolverTipo(QString *archivoXML)
 {
-
     int devolver = 0;
-    for(int i; i < recibo->size(); i++)
+
+    QStringList xml = procesarXML(archivoXML);
+    for(int i = 0; i < xml.size(); i++)
     {
-         if(QString::compare(recibo->at(i), "<action>"))
+         qDebug() << "tamanyo " << xml.size();
+         if(xml.at(i) == "<action>")
          {
-             if(QString::compare(recibo->at(i+1), "dispositivos"))
+             if(xml.at(i+1) == "dispositivos")
              {
+                 qDebug() << "entra en dispo " << i+1;
+                 qDebug() << "consulta tipo disposito";
                  devolver = 1;
-             }else if(QString::compare(recibo->at(i+1), "orden"))
+             }else if(xml.at(i+1) == "orden")
              {
+                 qDebug() << "consulta tipo orden";
                  devolver = 2;
              }
+             break;
          }
     }
     return devolver;
-    /*
-     * pendiente de revisar. ejemplo de DOM
-    //The QDomDocument class represents an XML document.
-    QDomDocument xmlBOM;
-    // Load xml file as raw data
-    QFile f(*archivoXML);
-    if (!f.open(QIODevice::ReadOnly ))
+}
+
+QString XML::devolverConsulta(QString *archivoXML)
+{
+    QString devolver;
+    QStringList xml = procesarXML(archivoXML);
+    for(int i = 0; i < xml.size(); i++)
     {
-        // Error while loading file
-        std::cerr << "Error while loading file" << std::endl;
-        return 0;
+         if(xml.at(i) == "<consulta>")
+         {
+             devolver = xml.at(i+1);
+
+             break;
+         }
     }
-    // Set data into the QDomDocument before processing
-    xmlBOM.setContent(&f);
-    f.close();
+    return devolver;
+}
 
-
-    // Extract the root markup
-    QDomElement root=xmlBOM.documentElement();
-
-    // Get root names and attributes
-    QString Type=root.tagName();
-    //QString Board=root.attribute("BOARD","No name");
-    //int Year=root.attribute("YEAR","1900").toInt();
-
-    // Display root data
-    std::cout << "Type  = " << Type.toStdString().c_str() << std::endl;
-    //std::cout << "Board = " << Board.toStdString().c_str() << std::endl;
-    //std::cout << "Year  = " << Year << std::endl;
-    std::cout << std::endl;
-
-    // Get the first child of the root (Markup COMPONENT is expected)
-    QDomElement Component=root.firstChild().toElement();
-
-    // Loop while there is a child
-    while(!Component.isNull())
+//Limpia la tabulacion y devuelve el string en una lista
+QStringList XML::procesarXML(QString *archivoXML)
+{
+    QStringList devolver = archivoXML->split("\n");
+    for(auto i : devolver)
     {
-        // Check if the child tag name is COMPONENT
-        if (Component.tagName()=="Orden")
-        {
-
-            // Read and display the component ID
-            QString ID=Component.attribute("ID","No ID");
-
-            // Get the first child of the component
-            QDomElement Child=Component.firstChild().toElement();
-
-            QString Name;
-            double Value;
-
-            // Read each child of the component node
-            while (!Child.isNull())
-            {
-                // Read Name and value
-                if (Child.tagName()=="NAME") Name=Child.firstChild().toText().data();
-                if (Child.tagName()=="VALUE") Value=Child.firstChild().toText().data().toDouble();
-
-                // Next child
-                Child = Child.nextSibling().toElement();
-            }
-
-            // Display component data
-            std::cout << "Component " << ID.toStdString().c_str() << std::endl;
-            std::cout << "   Name  = " << Name.toStdString().c_str() << std::endl;
-            std::cout << "   Value = " << Value << std::endl;
-            std::cout << std::endl;
-        }
-
-        // Next component
-        Component = Component.nextSibling().toElement();
+        qDebug() << i;
     }
-
-
-
-    */
-
+    return devolver;
 }

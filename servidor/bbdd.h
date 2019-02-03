@@ -14,8 +14,7 @@ public:
      void connect();
      void disconnet();
      bool m_bdStatus;
-protected:
-     std::unique_ptr<QSqlDatabase> m_db;
+     std::unique_ptr<QSqlDatabase> m_db; //dinamico se borra al destruir bbdd. Para probar. Necesario c++14
 private:
      QString m_driver;
      QString m_host;
@@ -23,6 +22,7 @@ private:
      QString m_databaseName;
      QString m_username;
      QString m_password;
+     void cargarDatosConfig();
 };
 
 #endif // BBDD_H

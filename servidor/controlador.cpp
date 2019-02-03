@@ -8,54 +8,46 @@
 
 Controlador::Controlador()
 {
-    m_bbdd = new BBDD();
     m_consultas = new Consultas();
     m_ws = new WebSocket();
     m_xml = new XML();
     QObject::connect(m_ws,SIGNAL(mensajeRecibido(mensajeEntrante)), this,SLOT(procesarPeticion(mensajeEntrante)));
-
 }
+
 Controlador::~Controlador()
 {
-    if(m_bbdd->m_bdStatus)
-    {
-        m_bbdd->disconnet();
-    }
-    delete m_bbdd;
+    delete m_ws;
+    delete m_xml;
+    delete m_consultas;
 }
-
 
 void Controlador::procesarPeticion(mensajeEntrante m)
 {
     bool validar = false;
-
-   /*QString temp = "temp_"+Utils::generarUUID().toString()+".xml";
-    Utils::crearArchivo(temp);
-    Utils::escribir(temp,*m_mensajeTemp);*/
     validar = m_xml->validaXML(&m.message);
-    validar = true; //debug
-    qDebug() << m.message;
-
     if(validar)
     {
-        int tipo = m_xml->tipo(&m.message);
+        int tipo = m_xml->devolverTipo(&m.message);
         switch(tipo)
         {
             case 1: //peticion dispositivos
             {
-                QStringList devolverDispositivos = m_consultas->devolverDispositivosAceptados();
+                QString consulta = m_xml->devolverConsulta(&m.message);
+                qDebug() <<"consulta es "<< consulta;
+                QStringList devolverDispositivos = m_consultas->devolverDispositivosAceptados(consulta);
                 QString envio;
 
                 for(int i; i < devolverDispositivos.size(); i++)
                 {
-                    envio.append(devolverDispositivos.at(i)+"\n");
+                    qDebug() << devolverDispositivos.at(i);
+                    envio.append(devolverDispositivos.at(i));
                 }
                 m_ws->emitTextMessage(envio,m.cliente);
                 break;
             }
             case 2: //crear orden
             {
-                QStringList reciboSplit = m.message.split("\n");
+                QStringList reciboSplit = m.message.split("");
                 QStringList peticion = m_xml->procesarOrden(&reciboSplit);
                 //WIP
                 QUuid estados_reparacion = m_consultas->devolverUuid("reparando","estados_reparacion");

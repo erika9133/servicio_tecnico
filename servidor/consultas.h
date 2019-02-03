@@ -6,17 +6,19 @@
 #include <QUuid>
 #include "bbdd.h"
 
-class Consultas : protected BBDD
+class Consultas
 {
 public:
     Consultas();
     ~Consultas();
+
     void crearOrden(QString cliente, QUuid estados_reparacion,
                     QUuid tecnicos, QUuid dispositivos, QUuid listado_tiendas);
-    QStringList devolverDispositivosAceptados();
+    QStringList devolverDispositivosAceptados(QString dispositivo);
     QUuid devolverUuid(QString registro, QString tabla);
-    //QString cliente, QUuid estados_reparacion,
-    //QUuid tecnicos, QUuid dispositivos, QUuid listado_tiendas
+private:
+    BBDD *m_bbdd;
+
 };
 
 #endif // CONSULTAS_H
