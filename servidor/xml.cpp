@@ -62,7 +62,7 @@ QString XML::generarDispositivos(QStringList *dispositivos)
     QString devolver;
     for(int i; i < dispositivos->size(); i++)
     {
-        insercion.append("<consulta>"+dispositivos->at(i)+"</consulta>\n");
+        insercion.append("<consulta>\n"+dispositivos->at(i)+"</consulta>\n");
     }
     devolver = {"<?xml version='1.0' encoding='UTF-8'?>\n"
                 "<!DOCTYPE servicio_tecnico SYSTEM 'http://www.3r1k4.com/dtd/dispositivos.dtd'>\n"
@@ -124,30 +124,6 @@ bool XML::validaXML(QString *archivoXML)
     return result;
 }
 
-int XML::devolverTipo(QString *archivoXML)
-{
-    int devolver = 0;
-    QStringList xml = procesarXML(archivoXML);
-    for(int i = 0; i < xml.size(); i++)
-    {
-         if(xml.at(i) == "<action>")
-         {
-             if(xml.at(i+1) == "dispositivos")
-             {
-                 qDebug() << "consulta tipo disposito";
-                 devolver = 1;
-             }else if(xml.at(i+1) == "orden")
-             {
-                 qDebug() << "consulta tipo orden";
-                 devolver = 2;
-             }
-             break;
-         }
-    }
-    return devolver;
-}
-
-
 //Devuelve el contenido de un nodo
 QString XML::devolverNodo(QString *archivoXML, QString nodo)
 {
@@ -164,7 +140,20 @@ QString XML::devolverNodo(QString *archivoXML, QString nodo)
     return devolver;
 }
 
-
+//Devuelve el contenido de un conjunto de nodos
+QStringList XML::devolverNodos(QString *archivoXML, QString nodos)
+{
+    QStringList devolver;
+    QStringList xml = procesarXML(archivoXML);
+    for(int i = 0; i < xml.size(); i++)
+    {
+         if(xml.at(i) == "<"+nodos+">")
+         {
+             devolver.append(xml.at(i+1));
+         }
+    }
+    return devolver;
+}
 
 //Limpia la tabulacion y devuelve el string en una lista
 QStringList XML::procesarXML(QString *archivoXML)

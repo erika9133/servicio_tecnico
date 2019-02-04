@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,12 +13,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->orden->setEnabled(false);
 }
 
-
 MainWindow::~MainWindow()
 {
     delete ui;
     delete m_xml;
-    m_cliente->disconnect();
     delete m_cliente;
 }
 
@@ -30,7 +28,21 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::reciveMessage(QString message)
 {
-    ui->listWidget->addItem(message);
+    QString tipoConsulta = m_xml->devolverNodo(&message,"action");
+    if(tipoConsulta == "dispositivos")
+    {
+        ui->listWidget->clear();
+        QStringList tipoDispositivos = m_xml->devolverNodos(&message,"consulta");
+        if(!tipoDispositivos.empty())
+        {
+            qDebug() << "tipo dis" << tipoDispositivos.at(0);
+            //QStringList devolverDispositivos = m_consultas->devolverDispositivosAceptados(tipoDispositivo);
+            for(int i = 0; i < tipoDispositivos.size(); i++)
+            {
+                ui->listWidget->addItem(tipoDispositivos.at(i));
+            }
+        }
+    }
 }
 
 void MainWindow::on_orden_clicked()

@@ -33,7 +33,6 @@ void Controlador::procesarPeticion(mensajeEntrante m)
             QString tipoDispositivo = m_xml->devolverNodo(&m.message,"consulta");
             qDebug() <<"consulta es "<< tipoDispositivo;
             QStringList devolverDispositivos = m_consultas->devolverDispositivosAceptados(tipoDispositivo);
-
             if(!devolverDispositivos.isEmpty())
             {
                 QString envio = m_xml->generarDispositivos(&devolverDispositivos);
