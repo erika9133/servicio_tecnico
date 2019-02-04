@@ -11,11 +11,13 @@ class QWebSocket;
 class Cliente : public QObject
 {
     Q_OBJECT
-
 public:
     explicit Cliente();
+    explicit ~Cliente();
     void sendMessage(QString message);
-
+    bool m_connected;
+private:
+     QWebSocket m_webSocket;
 signals:
     //void closed();
     void enviarMainWindow(QString);

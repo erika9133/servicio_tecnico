@@ -16,16 +16,12 @@ class XML : public QObject
 public:
     XML();
    ~XML();
-    //QStringList *m_dtd;
-    void generarOrden(QUuid id);
+    QString generarOrden(QUuid id);
+    QString generarDispositivos(QStringList *dispositivos);
     QStringList procesarOrden(QStringList *orden);
     bool validaXML(QString *archivoXML);
-    int devolverTipo(QString *archivoXML);
-    QString devolverConsulta(QString *archivoXML);
+    QString devolverNodo(QString *archivoXML,QString nodo);
     QStringList procesarXML(QString *archivoXML);
-
-
-
 };
 
 #endif // XML_H

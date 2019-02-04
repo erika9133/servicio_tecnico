@@ -10,6 +10,7 @@ public:
     XML();
     QString generarConsultaDispositivos(QString consulta);
     QString generarOrden(QString tienda,QString cliente,QString dispositivo);
+    QStringList procesarXML(QString *archivoXML);
 };
 
 #endif // XML_H

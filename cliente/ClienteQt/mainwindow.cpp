@@ -11,13 +11,15 @@ MainWindow::MainWindow(QWidget *parent) :
     m_cliente = new Cliente();
     connect(m_cliente, SIGNAL(enviarMainWindow(QString)),this,SLOT(reciveMessage(QString)));
     ui->orden->setEnabled(false);
-
 }
 
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete m_xml;
+    m_cliente->disconnect();
+    delete m_cliente;
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -41,7 +43,6 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 {
     dispositivo = true;
     comprobarBotonOrden();
-
 }
 
 void MainWindow::comprobarBotonOrden()
@@ -52,8 +53,6 @@ void MainWindow::comprobarBotonOrden()
     }else{
         ui->orden->setEnabled(false);
     }
-
-
 }
 
 void MainWindow::on_cliente_textChanged(const QString &arg1)

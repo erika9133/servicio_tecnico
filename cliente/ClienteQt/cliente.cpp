@@ -12,13 +12,18 @@ Cliente::Cliente()
 
 }
 
+Cliente::~Cliente()
+{
+ if (m_connected) disconnect();
+ delete m_webSocket;
+}
+
 void Cliente::go()
 {
     m_webSocket = new QWebSocket();
     connect(m_webSocket, SIGNAL(connected()),this,SLOT(connected()));
     connect(m_webSocket, SIGNAL(disconnected()),this,SLOT(disconnected()));
     connect(m_webSocket, SIGNAL(textMessageReceived(QString)),this,SLOT(reciveMessage(QString)));
-
     m_webSocket->open(m_url);
 }
 
