@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "xml.h"
 #include "cliente.h"
+#include "mainwindow.h"
 
 
 namespace Ui {
@@ -15,24 +16,24 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+     MainWindow(QWidget *parent = 0, Cliente *cliente = nullptr, XML *xml = nullptr, QString tienda = nullptr);
     ~MainWindow();
+     void reciveMessageApplicacion(QString &message);
 private slots:
     void on_buscar_clicked();
-    void reciveMessage(QString message);
     void on_orden_clicked();
-    void comprobarBotonOrden();
     void on_cliente_textChanged(const QString &arg1);
     void on_tienda_textChanged(const QString &arg1);
     void on_listaDispositivos_itemClicked(QListWidgetItem *item);
-
 private:
     Ui::MainWindow *ui;
     Cliente *m_cliente;
     XML *m_xml;
-    bool dispositivo;
-    bool cliente;
-    bool tienda;
+    bool m_dispositivoVerificacion;
+    bool m_clienteVerificacion;
+    bool m_tiendaVerificacion;
+
+    void comprobarBotonOrden();
 };
 
 #endif // MAINWINDOW_H

@@ -108,7 +108,6 @@ QUuid Consultas::devolverUuid(QString registro, QString tabla)
     if (!lastError.isEmpty())
     {
      qDebug() << lastError;
-
     }else{
         //You should call query.first() before you can access returned data. additionally if your query returns more than one row, you should iterate via query.next().
         query.first();
@@ -119,3 +118,32 @@ QUuid Consultas::devolverUuid(QString registro, QString tabla)
     return devolver;
 }
 
+bool Consultas::verificarTienda(QString tienda, QString pass)
+{
+    bool devolver = false;
+    QString tiendaRespuesta = "";
+    m_bbdd->connect();
+    m_bbdd->m_db->transaction();
+    QSqlQuery query("SELECT "
+                    "nombre_listado_tiendas "
+                    " FROM "
+                    "listado_tiendas"
+                    " WHERE "
+                    "password_listado_tiendas"
+                    " = "
+                    "'"+pass+"'"
+                    " ;", *m_bbdd->m_db);
+    QString lastError = query.lastError().text().trimmed();
+    if (!lastError.isEmpty())
+    {
+     qDebug() << lastError;
+    }else{
+        //You should call query.first() before you can access returned data. additionally if your query returns more than one row, you should iterate via query.next().
+        query.first();
+        tiendaRespuesta = query.value(0).toString();
+    }
+    m_bbdd->m_db->commit();
+    m_bbdd->disconnet();
+    if(tiendaRespuesta == tienda) devolver = true;
+    return devolver;
+}

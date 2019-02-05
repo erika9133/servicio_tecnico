@@ -29,12 +29,17 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     cliente.cpp \
-    xml.cpp
+    xml.cpp \
+    login.cpp \
+    aplicacion.cpp
 
 HEADERS += \
         mainwindow.h \
     cliente.h \
-    xml.h
+    xml.h \
+    login.h \
+    aplicacion.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    login.ui

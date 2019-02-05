@@ -2,23 +2,22 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(QWidget *parent, Cliente *cliente, XML *xml, QString tienda) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    m_xml = new XML();
-    m_cliente = new Cliente();
-    connect(m_cliente, SIGNAL(enviarMainWindow(QString)),this,SLOT(reciveMessage(QString)));
+    m_xml = xml;
+    m_cliente = cliente;
     ui->orden->setEnabled(false);
     ui->dispositivo->setDisabled(true);
+    ui->tienda->setDisabled(true);
+    ui->tienda->setText(tienda);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete m_xml;
-    delete m_cliente;
 }
 
 void MainWindow::on_buscar_clicked()
@@ -27,21 +26,15 @@ void MainWindow::on_buscar_clicked()
       m_cliente->sendMessage(consulta);
 }
 
-void MainWindow::reciveMessage(QString message)
-{
-    QString tipoConsulta = m_xml->devolverNodo(&message,"action");
-    if(tipoConsulta == "dispositivos")
+void MainWindow::reciveMessageApplicacion(QString &message)
+{    
+    ui->listaDispositivos->clear();
+    QStringList tipoDispositivos = m_xml->devolverNodos(&message,"consulta");
+    if(!tipoDispositivos.empty())
     {
-        ui->listaDispositivos->clear();
-        QStringList tipoDispositivos = m_xml->devolverNodos(&message,"consulta");
-        if(!tipoDispositivos.empty())
+        for(int i = 0; i < tipoDispositivos.size(); i++)
         {
-            qDebug() << "tipo dis" << tipoDispositivos.at(0);
-            //QStringList devolverDispositivos = m_consultas->devolverDispositivosAceptados(tipoDispositivo);
-            for(int i = 0; i < tipoDispositivos.size(); i++)
-            {
-                ui->listaDispositivos->addItem(tipoDispositivos.at(i));
-            }
+            ui->listaDispositivos->addItem(tipoDispositivos.at(i));
         }
     }
 }
@@ -54,7 +47,8 @@ void MainWindow::on_orden_clicked()
 
 void MainWindow::comprobarBotonOrden()
 {
-    if(dispositivo && tienda && cliente)
+    //refactor, pensado para elegir a mano cliente tienda y disp
+    if(m_dispositivoVerificacion && m_tiendaVerificacion && m_clienteVerificacion)
     {
         ui->orden->setEnabled(true);
     }else{
@@ -66,9 +60,9 @@ void MainWindow::on_cliente_textChanged(const QString &arg1)
 {
     QString texto = arg1;
     if(QString::compare(texto, "", Qt::CaseInsensitive) !=0){
-        cliente = true;
+        m_clienteVerificacion = true;
     }else{
-        cliente = false;
+        m_clienteVerificacion = false;
     }
     comprobarBotonOrden();
 }
@@ -77,16 +71,16 @@ void MainWindow::on_tienda_textChanged(const QString &arg1)
 {
     QString texto = arg1;
     if(QString::compare(texto, "", Qt::CaseInsensitive) !=0){
-        tienda = true;
+        m_tiendaVerificacion = true;
     }else{
-        tienda = false;
+        m_tiendaVerificacion = false;
     }
     comprobarBotonOrden();
 }
 
 void MainWindow::on_listaDispositivos_itemClicked(QListWidgetItem *item)
 {
-    dispositivo = true;
+    m_dispositivoVerificacion = true;
     ui->dispositivo->setText(item->text());
     comprobarBotonOrden();
 }

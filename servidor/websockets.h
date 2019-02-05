@@ -23,6 +23,7 @@ public:
     ~WebSocket();
     bool *m_wsStatus;
     QList<QWebSocket *> m_clients;
+    QList<QWebSocket *> m_clientsVerificados;
     void emitTextMessage(QString message, QWebSocket *pClient);
 signals:
     void closed();

@@ -16,6 +16,7 @@ public:
                     QUuid tecnicos, QUuid dispositivos, QUuid listado_tiendas);
     QStringList devolverDispositivosAceptados(QString dispositivo);
     QUuid devolverUuid(QString registro, QString tabla);
+    bool verificarTienda(QString tienda, QString pass);
 private:
     BBDD *m_bbdd;
 

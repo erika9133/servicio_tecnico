@@ -36,22 +36,23 @@ QStringList XML::procesarOrden(QStringList *orden)
     return devolver;
 }
 
-//Genera el XML con la orden para el cliente. No necesario aun
-QString XML::generarOrden(QUuid id)
+QString XML::generarLogin(bool verificacion)
 {
-    id = 0;
-    /* En formato de archivo
-    QString nombre = "Orden_"+id.toString();
-    QString archivo =nombre+".xml";
-
-    Utils::crearArchivo(archivo);
-    QStringList xmldoc = {"<documento>",
-                          "<id>"+nombre+"</id>",
-                          "</documento>"
-                          ""};
-   Utils::escribir(archivo,xmldoc);
-
-   */
+    QString insercion = "error";
+    if(verificacion) insercion = "valido";
+    QString devolver = {"<?xml version='1.0' encoding='UTF-8'?>\n"
+                        "<!DOCTYPE servicio_tecnico SYSTEM 'http://www.3r1k4.com/dtd/dispositivos.dtd'>\n"
+                        "<servicio_tecnico>\n"
+                        "<action>\n"
+                        "login\n"
+                        "</action>\n"
+                        "<consulta>\n"
+                        +insercion+"\n"
+                        "</consulta>\n"
+                        "</servicio_tecnico>"
+                       };
+    devolver.replace(0x27,0x22);
+    return devolver;
 }
 
 //Genera el XMl de envio con dispositivos aceptados

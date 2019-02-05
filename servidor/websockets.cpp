@@ -22,7 +22,9 @@ WebSocket::~WebSocket()
 {
     m_pWebSocketServer->close();
     qDeleteAll(m_clients.begin(), m_clients.end());
+    qDeleteAll(m_clientsVerificados.begin(), m_clientsVerificados.end());
     delete &m_clients;
+    delete &m_clientsVerificados;
     delete m_pWebSocketServer;
     delete m_wsStatus;
 }
@@ -35,7 +37,6 @@ void WebSocket::onNewConnection()
     connect(pSocket, &QWebSocket::disconnected, this, &WebSocket::socketDisconnected);
     m_clients << pSocket;
 }
-
 
 void WebSocket::processTextMessage(QString message)
 {

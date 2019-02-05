@@ -20,7 +20,7 @@ private:
      QWebSocket *m_webSocket;
 signals:
     //void closed();
-    void enviarMainWindow(QString);
+    void procesarMensaje(QString);
 public slots:
     void go();
     void connected();

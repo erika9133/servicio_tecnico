@@ -6,9 +6,29 @@ XML::XML()
 
 }
 
+QString XML::generarLogin(QString user, QString pass)
+{
+    QString devolver = {"<?xml version='1.0' encoding='UTF-8'?>\n"
+                        "<!DOCTYPE servicio_tecnico SYSTEM 'http://www.3r1k4.com/dtd/login.dtd'>\n"
+                        "<servicio_tecnico>\n"
+                        "<action>\n"
+                        "login\n"
+                        "</action>\n"
+                        "<tienda>\n"
+                        +user+"\n"
+                        "</tienda>\n"
+                        "<pass>\n"
+                        +pass+"\n"
+                        "</pass>\n"
+                        "</servicio_tecnico>"
+                       };
+    devolver.replace(0x27,0x22);
+    return devolver;
+
+}
+
 QString XML::generarConsultaDispositivos(QString consulta)
 {
-    //Espacio separa las cadenas
     QString devolver = {"<?xml version='1.0' encoding='UTF-8'?>\n"
                         "<!DOCTYPE servicio_tecnico SYSTEM 'http://www.3r1k4.com/dtd/dispositivos.dtd'>\n"
                         "<servicio_tecnico>\n"
@@ -24,6 +44,8 @@ QString XML::generarConsultaDispositivos(QString consulta)
     return devolver;
 
 }
+
+
 
 QString XML::generarOrden(QString tienda,QString cliente,QString dispositivo)
 {
