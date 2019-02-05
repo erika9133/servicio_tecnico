@@ -17,19 +17,14 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-
-
 private slots:
-    void on_pushButton_clicked();
+    void on_buscar_clicked();
     void reciveMessage(QString message);
-
     void on_orden_clicked();
     void comprobarBotonOrden();
-    void on_listWidget_itemClicked(QListWidgetItem *item);
-
     void on_cliente_textChanged(const QString &arg1);
-
     void on_tienda_textChanged(const QString &arg1);
+    void on_listaDispositivos_itemClicked(QListWidgetItem *item);
 
 private:
     Ui::MainWindow *ui;

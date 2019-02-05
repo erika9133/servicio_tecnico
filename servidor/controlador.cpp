@@ -37,18 +37,36 @@ void Controlador::procesarPeticion(mensajeEntrante m)
             {
                 QString envio = m_xml->generarDispositivos(&devolverDispositivos);
                 m_ws->emitTextMessage(envio,m.cliente);
-            }else if(tipoConsulta == "orden"){
-                QStringList reciboSplit = m.message.split("");
-                QStringList peticion = m_xml->procesarOrden(&reciboSplit);
-                //WIP
-                QUuid estados_reparacion = m_consultas->devolverUuid("reparando","estados_reparacion");
-                QUuid dispositivos = m_consultas->devolverUuid(peticion.at(2),"dispositivos");
-                QUuid listado_tiendas = m_consultas->devolverUuid(peticion.at(0),"listado_tiendas");
-                QString cliente = peticion.at(1);
-                QUuid tecnicos = m_consultas->devolverUuid("Martin horacio fernandez de la cruz","tecnicos");
-                m_consultas->crearOrden(cliente,estados_reparacion,tecnicos,dispositivos,listado_tiendas);
-
             }
+        }else if(tipoConsulta == "orden"){
+            QString tienda = m_xml->devolverNodo(&m.message,"tienda");
+            QString cliente = m_xml->devolverNodo(&m.message,"cliente");
+            QString dispositivo = m_xml->devolverNodo(&m.message,"dispositivo");
+            //Implementar tecnicos y estados de reparacion
+            QUuid tecnicos = m_consultas->devolverUuid("Martin horacio fernandez de la cruz","tecnicos");
+            QUuid estados_reparacion = m_consultas->devolverUuid("reparando","estados_reparacion");
+            //Implementar*********************************
+            QUuid dispositivos = m_consultas->devolverUuid(dispositivo,"dispositivos");
+            QUuid listado_tiendas = m_consultas->devolverUuid(tienda,"listado_tiendas");
+
+            if((listado_tiendas != NULL) && (estados_reparacion != NULL) && (dispositivo != NULL))
+            {
+                m_consultas->crearOrden(cliente,estados_reparacion,tecnicos,dispositivos,listado_tiendas);
+               // QStringList peticion = m_xml->procesarOrden(&reciboSplit);
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
         }
     }
 }

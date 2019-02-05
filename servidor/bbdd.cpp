@@ -27,14 +27,12 @@ void BBDD::connect()
         m_db->setPassword(m_password);
         bool ok = m_db->open();
         QSqlError error = m_db->lastError();
-        qDebug() << error.text();
         if (ok)
         {
             m_bdStatus = true;
-            qDebug() << "Conectado OK";
         }else{
             m_bdStatus = false;
-            qDebug() << "Error de conexion";
+            qDebug() << "Error de conexion" << error.text();
         }
     }
 }
@@ -43,7 +41,6 @@ void BBDD::disconnet()
 {
     if(m_bdStatus) m_bdStatus = false;
     if(m_db->open()) m_db->close();
-    qDebug() << "Desconectado OK";
 }
 
 void BBDD::cargarDatosConfig()

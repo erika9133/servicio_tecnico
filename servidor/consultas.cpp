@@ -102,7 +102,7 @@ QUuid Consultas::devolverUuid(QString registro, QString tabla)
                     " WHERE "
                     "nombre_"+tabla+
                     " = "
-                    +registro+
+                    "'"+registro+"'"
                     " ;", *m_bbdd->m_db);
     QString lastError = query.lastError().text().trimmed();
     if (!lastError.isEmpty())
@@ -110,6 +110,8 @@ QUuid Consultas::devolverUuid(QString registro, QString tabla)
      qDebug() << lastError;
 
     }else{
+        //You should call query.first() before you can access returned data. additionally if your query returns more than one row, you should iterate via query.next().
+        query.first();
         devolver = query.value(0).toUuid();
     }
     m_bbdd->m_db->commit();

@@ -19,7 +19,6 @@ QStringList XML::procesarOrden(QStringList *orden)
     QString cliente;
     QString dispositivo;
     QStringList devolver;
-
     for(int i; i < orden->size(); i++)
     {
         QString temp = orden->at(i);
