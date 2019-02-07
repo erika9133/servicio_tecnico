@@ -33,7 +33,7 @@ void Controlador::procesarPeticion(mensajeEntrante m)
         {
             if(tipoConsulta == "login")
             {
-                QString clienteTienda = m_xml->devolverNodo(&m.message, "tienda");
+                QString clienteTienda = m_xml->devolverNodo(&m.message, "user");
                 QString clientePass = m_xml->devolverNodo(&m.message, "pass");
                 bool verificacion = false;
 

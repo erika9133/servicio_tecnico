@@ -45,7 +45,6 @@ void Aplicacion::reciveMessage(QString message)
         if(m_xml->devolverNodo(&message,"consulta") == "valido"){
             hacerLogin();
         }else{
-            m_login->error();
             qDebug() << "Datos no validos";
         }
     }else if(tipoConsulta == "dispositivos"){

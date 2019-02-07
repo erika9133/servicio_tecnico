@@ -41,7 +41,7 @@ QString XML::generarLogin(bool verificacion)
     QString insercion = "error";
     if(verificacion) insercion = "valido";
     QString devolver = {"<?xml version='1.0' encoding='UTF-8'?>\n"
-                        "<!DOCTYPE servicio_tecnico SYSTEM 'http://www.3r1k4.com/dtd/dispositivos.dtd'>\n"
+                        "<!DOCTYPE servicio_tecnico SYSTEM 'http://www.3r1k4.com/dtd/consulta.dtd'>\n"
                         "<servicio_tecnico>\n"
                         "<action>\n"
                         "login\n"

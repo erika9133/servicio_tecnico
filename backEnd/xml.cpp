@@ -14,9 +14,9 @@ QString XML::generarLogin(QString user, QString pass)
                         "<action>\n"
                         "login\n"
                         "</action>\n"
-                        "<user>\n"
+                        "<tienda>\n"
                         +user+"\n"
-                        "</user>\n"
+                        "</tienda>\n"
                         "<pass>\n"
                         +pass+"\n"
                         "</pass>\n"
@@ -30,7 +30,7 @@ QString XML::generarLogin(QString user, QString pass)
 QString XML::generarConsultaDispositivos(QString consulta)
 {
     QString devolver = {"<?xml version='1.0' encoding='UTF-8'?>\n"
-                        "<!DOCTYPE servicio_tecnico SYSTEM 'http://www.3r1k4.com/dtd/consulta.dtd'>\n"
+                        "<!DOCTYPE servicio_tecnico SYSTEM 'http://www.3r1k4.com/dtd/dispositivos.dtd'>\n"
                         "<servicio_tecnico>\n"
                         "<action>\n"
                         "dispositivos\n"
