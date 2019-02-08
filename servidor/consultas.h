@@ -12,11 +12,11 @@ public:
     Consultas();
     ~Consultas();
 
-    void crearOrden(QString cliente, QUuid estados_reparacion,
+    bool crearOrden(QString cliente, QUuid estados_reparacion,
                     QUuid tecnicos, QUuid dispositivos, QUuid listado_tiendas);
-    QStringList devolverDispositivosAceptados(QString dispositivo);
+    QStringList devolverConsultaDosCondiciones(QString select, QString where, QString like, QString from);
     QUuid devolverUuid(QString registro, QString tabla);
-    bool verificarTienda(QString tienda, QString pass);
+    bool verificarLogin(QString user, QString pass, QString tabla);
 private:
     BBDD *m_bbdd;
 

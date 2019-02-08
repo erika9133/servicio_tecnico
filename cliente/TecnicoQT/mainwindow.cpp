@@ -2,14 +2,17 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 
-MainWindow::MainWindow(QWidget *parent, Cliente *cliente, XML *xml, QString tienda) :
+MainWindow::MainWindow(QWidget *parent, Cliente *cliente, XML *xml, QString tienda, QString user) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     m_xml = xml;
     m_cliente = cliente;
+    m_user = user;
+    m_xml->generarOrdenesActivas();
     ui->orden->setEnabled(false);
+    ui->exito->hide();
     ui->dispositivo->setDisabled(true);
     ui->tienda->setDisabled(true);
     ui->tienda->setText(tienda);
@@ -26,7 +29,7 @@ void MainWindow::on_buscar_clicked()
       m_cliente->sendMessage(consulta);
 }
 
-void MainWindow::reciveMessageApplicacion(QString &message)
+void MainWindow::recibirListaDispositivos(QString &message)
 {    
     ui->listaDispositivos->clear();
     QStringList tipoDispositivos = m_xml->devolverNodos(&message,"consulta");
@@ -37,6 +40,11 @@ void MainWindow::reciveMessageApplicacion(QString &message)
             ui->listaDispositivos->addItem(tipoDispositivos.at(i));
         }
     }
+}
+
+void MainWindow::recibirOrdenExito()
+{
+
 }
 
 void MainWindow::on_orden_clicked()
@@ -83,4 +91,9 @@ void MainWindow::on_listaDispositivos_itemClicked(QListWidgetItem *item)
     m_dispositivoVerificacion = true;
     ui->dispositivo->setText(item->text());
     comprobarBotonOrden();
+}
+
+void MainWindow::on_aceptarError_clicked()
+{
+    ui->exito->hide();
 }

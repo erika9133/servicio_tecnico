@@ -36,6 +36,22 @@ QStringList XML::procesarOrden(QStringList *orden)
     return devolver;
 }
 
+QString XML::generarRespuestaSimple(QString action, QString respuesta)
+{
+    QString devolver = {"<?xml version='1.0' encoding='UTF-8'?>\n"
+                        "<!DOCTYPE servicio_tecnico SYSTEM 'http://www.3r1k4.com/dtd/consulta.dtd'>\n"
+                        "<servicio_tecnico>\n"
+                        "<action>\n"
+                        +action+"\n"
+                        "</action>\n"
+                        "<consulta>\n"
+                        +respuesta+"\n"
+                        "</consulta>\n"
+                        "</servicio_tecnico>"
+                       };
+    devolver.replace(0x27,0x22);
+    return devolver;
+}
 QString XML::generarLogin(bool verificacion)
 {
     QString insercion = "error";

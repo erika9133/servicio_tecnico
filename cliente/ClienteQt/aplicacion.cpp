@@ -51,7 +51,12 @@ void Aplicacion::reciveMessage(QString message)
     }else if(tipoConsulta == "dispositivos"){
         if(m_window != NULL)
         {
-            m_window->reciveMessageApplicacion(message);
+            m_window->recibirListaDispositivos(message);
+        }
+    }else if(tipoConsulta == "ordenExito"){
+        if(m_window != NULL)
+        {
+            m_window->recibirOrdenExito();
         }
     }
 }

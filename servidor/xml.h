@@ -16,6 +16,7 @@ class XML : public QObject
 public:
     XML();
    ~XML();
+    QString generarRespuestaSimple(QString action, QString respuesta);
     QString generarDispositivos(QStringList *dispositivos);
     QString generarLogin(bool verificacion);
     QStringList procesarOrden(QStringList *orden);

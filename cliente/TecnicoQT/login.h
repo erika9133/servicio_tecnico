@@ -17,19 +17,18 @@ public:
     ~Login();
     QString getPassword();
     QString getUser();
+    void error();
+    QString *m_user;
 signals:
     void checkLogin();
 private slots:
-    void on_botones_accepted();
-
-    void on_botones_rejected();
-
     void on_validar_clicked();
+    void on_aceptarError_clicked();
 
 private:
-    Ui::Login *ui;
-    QString *m_user;
+    Ui::Login *ui; 
     QString *m_pass;
+
 };
 
 #endif // LOGIN_H

@@ -21,10 +21,12 @@ WebSocket::WebSocket() : m_pWebSocketServer(new QWebSocketServer(QStringLiteral(
 WebSocket::~WebSocket()
 {
     m_pWebSocketServer->close();
-    qDeleteAll(m_clients.begin(), m_clients.end());
-    qDeleteAll(m_clientsVerificados.begin(), m_clientsVerificados.end());
-    delete &m_clients;
-    delete &m_clientsVerificados;
+    qDeleteAll(m_clientes.begin(), m_clientes.end());
+    qDeleteAll(m_clientesVerificados.begin(), m_clientesVerificados.end());
+    qDeleteAll(m_tecnicosVerificados.begin(), m_tecnicosVerificados.end());
+    delete &m_clientes;
+    delete &m_clientesVerificados;
+    delete &m_tecnicosVerificados;
     delete m_pWebSocketServer;
     delete m_wsStatus;
 }
@@ -35,18 +37,18 @@ void WebSocket::onNewConnection()
     qDebug() << "Socket conectado:" << pSocket;
     connect(pSocket, &QWebSocket::textMessageReceived, this, &WebSocket::processTextMessage);
     connect(pSocket, &QWebSocket::disconnected, this, &WebSocket::socketDisconnected);
-    m_clients << pSocket;
+    m_clientes << pSocket;
 }
 
 void WebSocket::processTextMessage(QString message)
 {
 
     QWebSocket *pClient = qobject_cast<QWebSocket *>(sender());
-    mensajeEntrante m;
+    stringCliente m;
     m.cliente = pClient;
     m.message = message;
-    emit mensajeRecibido(m);
-    qDebug() << "De: " << pClient << " Mensaje recibido";
+    emit mensajeRecibido(message);
+   // qDebug() << "De: " << pClient << " Mensaje recibido";
 }
 
 void WebSocket::emitTextMessage(QString message, QWebSocket *pClient)
@@ -61,7 +63,9 @@ void WebSocket::socketDisconnected()
 
     if (pClient)
     {
-        m_clients.removeAll(pClient);
+        m_clientes.removeAll(pClient);
+        if(m_clientesVerificados.contains(stringCliente.cliente == pClient)) m_clientesVerificados.removeAll(stringCliente.cliente == pClient);
+        if(m_tecnicosVerificados.contains(stringCliente.cliente == pClient)) m_tecnicosVerificados.removeAll(stringCliente.cliente == pClient);
         pClient->deleteLater();
     } // end if
 }

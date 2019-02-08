@@ -21,57 +21,69 @@ Controlador::~Controlador()
     delete m_consultas;
 }
 
-void Controlador::procesarPeticion(stringCliente sC)
+void Controlador::procesarPeticion(stringCliente mensajeEntrante)
 {
+    ///stringCliente es un struc que se usa en varias cosas.
     bool validar = false;
     validar = m_xml->validaXML(&sC.message);
     ///TO DO validar pasando nombre del dtd y no direccion de la ubicacion
     if(validar)
     {
-        QString tipoConsulta = m_xml->devolverNodo(&sC.message,"action");
-
+        QString tipoConsulta = m_xml->devolverNodo(&mensajeEntrante.message,"action");
         if(tipoConsulta == "login"){
-            QString tiendaUser = m_xml->devolverNodo(&sC.message, "user");
-            QString tiendaPass = m_xml->devolverNodo(&sC.message, "pass");
+            QString tiendaUser = m_xml->devolverNodo(&mensajeEntrante.message, "user");
+            QString tiendaPass = m_xml->devolverNodo(&mensajeEntrante.message, "pass");
             bool verificacion = false;
+            ///Verifica que el usuario esta en la bbdd
             if(m_consultas->verificarLogin(tiendaUser,tiendaPass,"listado_tiendas"))
             {
-               verificacion = true;
-
-               ///Si no contine el cliente verificado lo guarda. Evita dos inicios de sesion distintos con mismo pclient
-              if(!m_ws->m_clientesVerificados.contains(stringCliente.cliente == sC.cliente))
-               {
-                   stringCliente cliente;
-                   m_ws->m_clientesVerificados.append(cliente);
-               }
-
+                verificacion = true;
+                ///Si esta en bbdd pero no en la lista de clientes conectados...
+                if(!m_ws->m_clientesVerificados.contains(stringCliente.cliente == mensajeEntrante.cliente))
+                {
+                    stringCliente cliente;
+                    cliente.cliente = mensajeEntrante.cliente;
+                    cliente.message = tiendaUser;
+                    ///Metemos el pclient y su nombre.
+                    m_ws->m_clientesVerificados.append(cliente);
+                }
             }//end verificar
-            ///Devuelve el login de success o no success
+            ///Devuelve el login de success o no success para que el cliente le pase a otra ventana
             QString xmlLogin = m_xml->generarLogin(verificacion);;
-            m_ws->emitTextMessage(xmlLogin,sC.cliente);
+            m_ws->emitTextMessage(xmlLogin,mensajeEntrante.cliente);
+            
         }else if(tipoConsulta == "loginStaff"){
-            QString tecnicoUser = m_xml->devolverNodo(&m.message, "user");
-            QString tecnicoPass = m_xml->devolverNodo(&m.message, "pass");
+            QString tecnicoUser = m_xml->devolverNodo(&mensajeEntrante.message, "user");
+            QString tecnicoPass = m_xml->devolverNodo(&mensajeEntrante.message, "pass");
             bool verificacion = false;
             if(m_consultas->verificarLogin(tecnicoUser,tecnicoPass,"tecnicos"))
             {
                verificacion = true;
-               if(!m_ws->m_tecnicosVerificados.contains(m.cliente)) m_ws->m_tecnicosVerificados.append(m.cliente);
-               m_ws->m_tecnicosVerificados.append(m.cliente);
+               if(!m_ws->m_tecnicosVerificados.contains(stringCliente.cliente == mensajeEntrante.cliente))
+               {
+                   stringCliente cliente;
+                   cliente.cliente = mensajeEntrante.cliente;
+                   cliente.message = tecnicoUser;
+                   ///Metemos el pclient y su nombre.
+                   m_ws->m_clientesVerificados.append(cliente);
+               }
             }
             QString xmlLogin = m_xml->generarLogin(verificacion);;
-            m_ws->emitTextMessage(xmlLogin,m.cliente);
+            m_ws->emitTextMessage(xmlLogin,mensajeEntrante.cliente);
+            //END LOGIN
+            
         }else if(tipoConsulta == "dispositivos"){
-            QString tipoDispositivo = m_xml->devolverNodo(&m.message,"consulta");
+            QString tipoDispositivo = m_xml->devolverNodo(&mensajeEntrante.message,"consulta");
             QStringList devolverDispositivos = m_consultas->devolverConsultaDosCondiciones("nombre_dispositivo","dispositivos","nombre_dispositivo",tipoDispositivo);
             if(!devolverDispositivos.isEmpty())
             {
                 QString envio = m_xml->generarDispositivos(&devolverDispositivos);
-                m_ws->emitTextMessage(envio,m.cliente);
+                m_ws->emitTextMessage(envio,mensajeEntrante.cliente);
             }
         }else if(tipoConsulta == "orden"){
-            if(m_ws->m_clientesVerificados.contains(m.cliente)){
-                ///Solo las tiendas pueden crear ordenes
+            ///Solo las tiendas pueden crear ordenes
+            if(m_ws->m_clientesVerificados.contains(mensajeEntrante.cliente)){
+                
                 QString tienda = m_xml->devolverNodo(&m.message,"tienda");
                 QString cliente = m_xml->devolverNodo(&m.message,"cliente");
                 QString dispositivo = m_xml->devolverNodo(&m.message,"dispositivo");

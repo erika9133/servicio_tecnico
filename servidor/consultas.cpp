@@ -14,7 +14,7 @@ Consultas::~Consultas()
     delete m_bbdd;
 }
 
-void Consultas::crearOrden(QString cliente, QUuid estados_reparacion,
+bool Consultas::crearOrden(QString cliente, QUuid estados_reparacion,
                            QUuid tecnicos, QUuid dispositivos, QUuid listado_tiendas)
 {
     //Test*
@@ -25,7 +25,7 @@ void Consultas::crearOrden(QString cliente, QUuid estados_reparacion,
     //QUuid dispositivos = "920dddb7-3cf5-4e9a-8e2d-4426b1e8973a";
     //QUuid listado_tiendas = "a91d6f79-330e-4fa5-a27c-fae47d994b09";
 
-
+    bool devolver = false;
     m_bbdd->connect();
     m_bbdd->m_db->transaction();
     QUuid uuid_ordenes = Utils::generarUUID();
@@ -49,29 +49,33 @@ void Consultas::crearOrden(QString cliente, QUuid estados_reparacion,
     if (!lastError.isEmpty())
     {
         qDebug() << lastError;
+    }else{
+        devolver = true;
     }
     m_bbdd->m_db->commit();
     m_bbdd->disconnet();
+    return devolver;
 }
 
-QStringList Consultas::devolverDispositivosAceptados(QString dispositivo)
+QStringList Consultas::devolverConsultaDosCondiciones(QString select, QString where, QString like, QString from)
 {
-    if (dispositivo == "")
+    if (like == "")
     {
-        dispositivo = "'%'";
+        like = "'%'";
     }else{
-        dispositivo = "'%"+dispositivo+"%'";
+        like = "'%"+like+"%'";
     }
     QStringList devolver;
     m_bbdd->connect();
     m_bbdd->m_db->transaction();
     QSqlQuery query("SELECT "
-               "nombre_dispositivos "
-               "FROM dispositivos "
-               "WHERE "
-               "nombre_dispositivos "
+               +select+
+               " FROM "
+               +from+
+               " WHERE "
+               +where+
                "like "
-               +dispositivo+
+               +like+
                ";", *m_bbdd->m_db);
     QString lastError = query.lastError().text().trimmed();
     if (!lastError.isEmpty())
@@ -118,18 +122,18 @@ QUuid Consultas::devolverUuid(QString registro, QString tabla)
     return devolver;
 }
 
-bool Consultas::verificarTienda(QString tienda, QString pass)
+bool Consultas::verificarLogin(QString user, QString pass, QString tabla)
 {
     bool devolver = false;
-    QString tiendaRespuesta = "";
+    QString respuesta = "";
     m_bbdd->connect();
     m_bbdd->m_db->transaction();
     QSqlQuery query("SELECT "
-                    "nombre_listado_tiendas "
+                    "nombre_"+tabla+
                     " FROM "
-                    "listado_tiendas"
+                    +tabla+
                     " WHERE "
-                    "password_listado_tiendas"
+                    "password_"+tabla+
                     " = "
                     "'"+pass+"'"
                     " ;", *m_bbdd->m_db);
@@ -140,10 +144,10 @@ bool Consultas::verificarTienda(QString tienda, QString pass)
     }else{
         //You should call query.first() before you can access returned data. additionally if your query returns more than one row, you should iterate via query.next().
         query.first();
-        tiendaRespuesta = query.value(0).toString();
+        respuesta = query.value(0).toString();
     }
     m_bbdd->m_db->commit();
     m_bbdd->disconnet();
-    if(tiendaRespuesta == tienda) devolver = true;
+    if(respuesta == user) devolver = true;
     return devolver;
 }

@@ -5,11 +5,12 @@
 #include <QList>
 #include <QString>
 #include <QByteArray>
+#include <QPair>
 
 class QWebSocketServer;
 class QWebSocket;
 
-struct mensajeEntrante {
+struct stringCliente {
   QString message;
   QWebSocket *cliente;
 };
@@ -22,12 +23,13 @@ public:
     explicit WebSocket();
     ~WebSocket();
     bool *m_wsStatus;
-    QList<QWebSocket *> m_clients;
-    QList<QWebSocket *> m_clientsVerificados;
+    QList<QWebSocket *> m_clientes;
+    QList<stringCliente> m_clientesVerificados;
+    QList<stringCliente> m_tecnicosVerificados;
     void emitTextMessage(QString message, QWebSocket *pClient);
 signals:
     void closed();
-    void mensajeRecibido(mensajeEntrante m);
+    void mensajeRecibido(stringCliente message);
 private slots:
     void onNewConnection();
     void processTextMessage(QString message);

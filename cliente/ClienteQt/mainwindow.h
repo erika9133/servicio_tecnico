@@ -18,13 +18,16 @@ class MainWindow : public QMainWindow
 public:
      MainWindow(QWidget *parent = 0, Cliente *cliente = nullptr, XML *xml = nullptr, QString tienda = nullptr);
     ~MainWindow();
-     void reciveMessageApplicacion(QString &message);
+     void recibirListaDispositivos(QString &message);
+     void recibirOrdenExito();
 private slots:
     void on_buscar_clicked();
     void on_orden_clicked();
     void on_cliente_textChanged(const QString &arg1);
     void on_tienda_textChanged(const QString &arg1);
     void on_listaDispositivos_itemClicked(QListWidgetItem *item);
+    void on_aceptarError_clicked();
+
 private:
     Ui::MainWindow *ui;
     Cliente *m_cliente;

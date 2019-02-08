@@ -42,4 +42,5 @@ HEADERS += \
 
 FORMS += \
         mainwindow.ui \
-    login.ui
+    login.ui \
+    error.ui
