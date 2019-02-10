@@ -98,7 +98,7 @@ bool XML::validaXML(QString *archivoXML)
     QString temp = *archivoXML;
     temp.replace('\n',' ');
     const char* validar = temp.toLatin1().data();
-    qDebug() << validar;
+    //qDebug() << validar;
     //COPY PASTE, todos los derechos sin reservar
     bool result = false;
     /// Crea el contexto del analizador.
@@ -175,9 +175,9 @@ QStringList XML::devolverNodos(QString *archivoXML, QString nodos)
 QStringList XML::procesarXML(QString *archivoXML)
 {
     QStringList devolver = archivoXML->split("\n");
-    for(auto i : devolver)
+    /*for(auto i : devolver)
     {
         qDebug() << i;
-    }
+    }*/
     return devolver;
 }

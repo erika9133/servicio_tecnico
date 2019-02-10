@@ -19,7 +19,7 @@ void BBDD::connect()
 {
     if(!m_bdStatus)
     {
-        qDebug() << m_db->isValid();
+        //qDebug() << m_db->isValid();
         m_db->setHostName(m_host);
         m_db->setPort(m_port);
         m_db->setDatabaseName(m_databaseName);

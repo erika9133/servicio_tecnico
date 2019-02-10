@@ -45,7 +45,7 @@ void Cliente::disconnected()
 void Cliente::sendMessage(QString message)
 {
     if (m_connected){
-        qDebug() << "Message enviado:" << message;
+        //qDebug() << "Message enviado:" << message;
         m_webSocket->sendTextMessage(message);
     }
 }
@@ -53,6 +53,6 @@ void Cliente::sendMessage(QString message)
 void Cliente::reciveMessage(QString message)
 {
     emit procesarMensaje(message);
-    qDebug() << "Message recibido:" << message;
+   // qDebug() << "Message recibido:" << message;
 }
 

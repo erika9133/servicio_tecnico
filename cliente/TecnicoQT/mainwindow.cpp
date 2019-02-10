@@ -10,12 +10,13 @@ MainWindow::MainWindow(QWidget *parent, Cliente *cliente, XML *xml, QString tien
     m_xml = xml;
     m_cliente = cliente;
     m_user = user;
-    m_xml->generarOrdenesActivas();
+    m_xml->generarOrdenesActivas(user,);
     ui->orden->setEnabled(false);
     ui->exito->hide();
     ui->dispositivo->setDisabled(true);
     ui->tienda->setDisabled(true);
     ui->tienda->setText(tienda);
+    cargarOrdenesActivas();
 }
 
 MainWindow::~MainWindow()
@@ -96,4 +97,10 @@ void MainWindow::on_listaDispositivos_itemClicked(QListWidgetItem *item)
 void MainWindow::on_aceptarError_clicked()
 {
     ui->exito->hide();
+}
+
+void MainWindow::cargarOrdenesActivas()
+{
+    QString consulta = m_xml->generarActionConsulta("ordenesActivas","Reparando");
+    m_cliente->sendMessage(consulta);
 }

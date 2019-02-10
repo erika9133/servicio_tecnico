@@ -27,13 +27,13 @@ QString XML::generarLogin(QString user, QString pass)
 
 }
 
-QString XML::generarConsultaDispositivos(QString consulta)
+QString XML::generarActionConsulta(QString action, QString consulta)
 {
     QString devolver = {"<?xml version='1.0' encoding='UTF-8'?>\n"
                         "<!DOCTYPE servicio_tecnico SYSTEM 'http://www.3r1k4.com/dtd/consulta.dtd'>\n"
                         "<servicio_tecnico>\n"
                         "<action>\n"
-                        "dispositivos\n"
+                        +action+"\n"
                         "</action>\n"
                         "<consulta>\n"
                         +consulta+"\n"
@@ -44,8 +44,6 @@ QString XML::generarConsultaDispositivos(QString consulta)
     return devolver;
 
 }
-
-
 
 QString XML::generarOrden(QString tienda,QString cliente,QString dispositivo)
 {
@@ -95,7 +93,7 @@ QStringList XML::devolverNodos(QString *archivoXML, QString nodos)
     {
          if(xml.at(i) == "<"+nodos+">")
          {
-             qDebug() << "entra" << i << nodos;
+             //qDebug() << "entra" << i << nodos;
              devolver.append(xml.at(i+1));
          }
     }
@@ -106,9 +104,9 @@ QStringList XML::devolverNodos(QString *archivoXML, QString nodos)
 QStringList XML::procesarXML(QString *archivoXML)
 {
     QStringList devolver = archivoXML->split("\n");
-    for(auto i : devolver)
+    /*for(auto i : devolver)
     {
         qDebug() << i;
-    }
+    }*/
     return devolver;
 }

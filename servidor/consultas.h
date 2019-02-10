@@ -14,9 +14,12 @@ public:
 
     bool crearOrden(QString cliente, QUuid estados_reparacion,
                     QUuid tecnicos, QUuid dispositivos, QUuid listado_tiendas);
-    QStringList devolverConsultaDosCondiciones(QString select, QString where, QString like, QString from);
+    QStringList devolverConsultaDosCondiciones(QString select, QString from, QString where, QString like);
     QUuid devolverUuid(QString registro, QString tabla);
     bool verificarLogin(QString user, QString pass, QString tabla);
+    QUuid devolverTecnicoMenosOrdenesReparando();
+    QString devolverOrdenesActicas(QString tecnico,QString tipo);
+
 private:
     BBDD *m_bbdd;
 

@@ -17,7 +17,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-     MainWindow(QWidget *parent = 0, Cliente *cliente = nullptr, XML *xml = nullptr, QString tienda = nullptr,QString user);
+     MainWindow(QWidget *parent = 0, Cliente *cliente = nullptr, XML *xml = nullptr, QString tienda = nullptr, QString user);
     ~MainWindow();
      void recibirListaDispositivos(QString &message);
      void recibirOrdenExito();
@@ -31,6 +31,7 @@ private slots:
     QString m_user;
 
 private:
+    void cargarOrdenesActivas();
     Ui::MainWindow *ui;
     Cliente *m_cliente;
     XML *m_xml;

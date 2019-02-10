@@ -2,15 +2,13 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 
-MainWindow::MainWindow(QWidget *parent, Cliente *cliente, XML *xml, QString tienda, QString user) :
+MainWindow::MainWindow(QWidget *parent, Cliente *cliente, XML *xml, QString tienda) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     m_xml = xml;
     m_cliente = cliente;
-    m_user = user;
-    m_xml->generarOrdenesActivas(user,);
     ui->orden->setEnabled(false);
     ui->exito->hide();
     ui->dispositivo->setDisabled(true);
@@ -25,7 +23,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_buscar_clicked()
 {
-      QString consulta = m_xml->generarConsultaDispositivos(ui->lineaDispositovos->text());
+      QString consulta = m_xml->generarActionConsulta("dispositivos",ui->lineaDispositovos->text());
       m_cliente->sendMessage(consulta);
 }
 
@@ -44,7 +42,7 @@ void MainWindow::recibirListaDispositivos(QString &message)
 
 void MainWindow::recibirOrdenExito()
 {
-
+    ui->exito->show();
 }
 
 void MainWindow::on_orden_clicked()

@@ -27,13 +27,13 @@ QString XML::generarLogin(QString user, QString pass)
 
 }
 
-QString XML::generarConsultaDispositivos(QString consulta)
+QString XML::generarActionConsulta(QString action, QString consulta)
 {
     QString devolver = {"<?xml version='1.0' encoding='UTF-8'?>\n"
                         "<!DOCTYPE servicio_tecnico SYSTEM 'http://www.3r1k4.com/dtd/consulta.dtd'>\n"
                         "<servicio_tecnico>\n"
                         "<action>\n"
-                        "dispositivos\n"
+                        +action+"\n"
                         "</action>\n"
                         "<consulta>\n"
                         +consulta+"\n"
@@ -43,32 +43,8 @@ QString XML::generarConsultaDispositivos(QString consulta)
     devolver.replace(0x27,0x22);
     return devolver;
 
-}
+}s
 
-
-
-QString XML::generarOrdenesActivas(QString tecnico,QString cliente,QString dispositivo)
-{
-    QString devolver = {"<?xml version='1.0' encoding='UTF-8'?>\n"
-                        "<!DOCTYPE servicio_tecnico SYSTEM 'http://www.3r1k4.com/dtd/orden.dtd'>\n"
-                        "<servicio_tecnico>\n"
-                        "<action>\n"
-                        "orden\n"
-                        "</action>\n"
-                        "<tienda>\n"
-                        +tienda+"\n"
-                        "</tienda>\n"
-                        "<cliente>\n"
-                        +cliente+"\n"
-                        "</cliente>\n"
-                        "<dispositivo>\n"
-                        +dispositivo+"\n"
-                        "</dispositivo>\n"
-                        "</servicio_tecnico>\n"
-                       };
-    devolver.replace(0x27,0x22);
-    return devolver;
-}
 
 //Devuelve el contenido de un nodo
 QString XML::devolverNodo(QString *archivoXML, QString nodo)

@@ -10,8 +10,14 @@
 class QWebSocketServer;
 class QWebSocket;
 
-struct stringCliente {
+struct MensajeEntrante {
   QString message;
+  QWebSocket *cliente;
+};
+
+struct ClienteVerificado {
+  QString nombre;
+  QString tipo; //tecnico o cliente
   QWebSocket *cliente;
 };
 
@@ -24,12 +30,13 @@ public:
     ~WebSocket();
     bool *m_wsStatus;
     QList<QWebSocket *> m_clientes;
-    QList<stringCliente> m_clientesVerificados;
-    QList<stringCliente> m_tecnicosVerificados;
+    QList<ClienteVerificado> m_clientesVerificados;
     void emitTextMessage(QString message, QWebSocket *pClient);
+    bool estaEnListaVerificados(QWebSocket * aVerificar);
+    bool estaEnListaVerifcadosConTipo(QWebSocket * aVerificar, QString tipo);
 signals:
     void closed();
-    void mensajeRecibido(stringCliente message);
+    void mensajeRecibido(MensajeEntrante message);
 private slots:
     void onNewConnection();
     void processTextMessage(QString message);

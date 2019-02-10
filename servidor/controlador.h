@@ -18,12 +18,13 @@ public:
     void iniciarBBDD();
     void iniciarWS();
 private slots:
-    void procesarPeticion(mensajeEntrante m);
+    void procesarPeticion(MensajeEntrante m);
 private:
    BBDD *m_bbdd;
    WebSocket *m_ws;
    XML *m_xml;
    Consultas *m_consultas;
+   QUuid gestorDeColas(QString criterio);
 
 };
 

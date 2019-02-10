@@ -57,7 +57,7 @@ bool Consultas::crearOrden(QString cliente, QUuid estados_reparacion,
     return devolver;
 }
 
-QStringList Consultas::devolverConsultaDosCondiciones(QString select, QString where, QString like, QString from)
+QStringList Consultas::devolverConsultaDosCondiciones(QString select, QString from, QString where, QString like)
 {
     if (like == "")
     {
@@ -74,7 +74,7 @@ QStringList Consultas::devolverConsultaDosCondiciones(QString select, QString wh
                +from+
                " WHERE "
                +where+
-               "like "
+               " like "
                +like+
                ";", *m_bbdd->m_db);
     QString lastError = query.lastError().text().trimmed();
@@ -85,7 +85,7 @@ QStringList Consultas::devolverConsultaDosCondiciones(QString select, QString wh
     }else{
         while(query.next())
         {
-            qDebug() << query.value(0).toString();
+            //qDebug() << query.value(0).toString();
             devolver.append(query.value(0).toString()+"\n");
         }
     }
@@ -151,3 +151,57 @@ bool Consultas::verificarLogin(QString user, QString pass, QString tabla)
     if(respuesta == user) devolver = true;
     return devolver;
 }
+
+QUuid Consultas::devolverTecnicoMenosOrdenesReparando()
+{
+    QUuid devolver;
+    m_bbdd->connect();
+    m_bbdd->m_db->transaction();
+    QSqlQuery query("SELECT tecnicos.uuid_tecnicos "
+                    "FROM tecnicos "
+                    "join ordenes on ordenes.uuid_tecnicos=tecnicos.uuid_tecnicos "
+                    "join estados_reparacion on estados_reparacion.uuid_estados_reparacion=ordenes.uuid_estados_reparacion "
+                    "where nombre_estados_reparacion like 'reparando' "
+                    "group by tecnicos.uuid_tecnicos "
+                    "order by count(*) asc limit 1; ", *m_bbdd->m_db);
+    QString lastError = query.lastError().text().trimmed();
+    if (!lastError.isEmpty())
+    {
+        qDebug() << lastError;
+
+    }else{
+        query.first();
+        devolver = query.value(0).toUuid();
+    }
+    m_bbdd->m_db->commit();
+    m_bbdd->disconnet();
+    return devolver;
+}
+
+QString Consultas::devolverOrdenesActicas(QString tecnico, QString tipo)
+{
+    QString devolver;
+    m_bbdd->connect();
+    m_bbdd->m_db->transaction();
+    QSqlQuery query("SELECT uuid_ordenes, cliente_ordenes FROM tecnicos "
+                    " join ordenes on ordenes.uuid_tecnicos=tecnicos.uuid_tecnicos "
+                    " join estados_reparacion on estados_reparacion.uuid_estados_reparacion=ordenes.uuid_estados_reparacion "
+                    " where nombre_estados_reparacion like '"+tipo+"' and tecnicos.nombre_tecnicos like '"+tecnico+"';", *m_bbdd->m_db);
+    QString lastError = query.lastError().text().trimmed();
+    if (!lastError.isEmpty())
+    {
+        qDebug() << lastError;
+
+    }else{
+        while(query.next())
+        {
+            //qDebug() << query.value(0).toString();
+            //WIP Devolver DOs tipos distintos para mostrar en el cliente del tecnico.
+            devolver.append(query.value(0).toString()+"\n");
+        }
+    }
+    m_bbdd->m_db->commit();
+    m_bbdd->disconnet();
+    return devolver;
+}
+
