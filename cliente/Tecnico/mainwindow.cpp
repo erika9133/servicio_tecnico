@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 
-MainWindow::MainWindow(QWidget *parent, Cliente *cliente, XML *xml, QString tienda, QString user) :
+MainWindow::MainWindow(QWidget *parent, Cliente *cliente, XML *xml, QString user) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
@@ -10,12 +10,12 @@ MainWindow::MainWindow(QWidget *parent, Cliente *cliente, XML *xml, QString tien
     m_xml = xml;
     m_cliente = cliente;
     m_user = user;
-    m_xml->generarOrdenesActivas(user,);
+    //cargar("ordenesActivas","ordenesActivas");
     ui->orden->setEnabled(false);
     ui->exito->hide();
     ui->dispositivo->setDisabled(true);
-    ui->tienda->setDisabled(true);
-    ui->tienda->setText(tienda);
+    //ui->tienda->setDisabled(true);
+    //ui->tienda->setText(tienda);
     cargarOrdenesActivas();
 }
 
@@ -26,7 +26,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_buscar_clicked()
 {
-      QString consulta = m_xml->generarConsultaDispositivos(ui->lineaDispositovos->text());
+      QString consulta = m_xml->generarActionConsulta("dispositivos",ui->lineaDispositovos->text());
       m_cliente->sendMessage(consulta);
 }
 
@@ -48,10 +48,23 @@ void MainWindow::recibirOrdenExito()
 
 }
 
+void MainWindow::recibirOrdenesActivas(QString &message)
+{
+    ui->ordenesActivas->clear();
+    QStringList ordenesActivas = m_xml->devolverNodos(&message,"consulta");
+    if(!ordenesActivas.empty())
+    {
+        for(int i = 0; i < ordenesActivas.size(); i++)
+        {
+            ui->ordenesActivas->addItem(ordenesActivas.at(i));
+        }
+    }
+}
+
 void MainWindow::on_orden_clicked()
 {
-    QString orden = m_xml->generarOrden(ui->tienda->text(),ui->cliente->text(),ui->listaDispositivos->selectedItems().at(0)->text());
-    m_cliente->sendMessage(orden);
+   // QString orden = m_xml->generarOrden(ui->tienda->text(),ui->cliente->text(),ui->listaDispositivos->selectedItems().at(0)->text());
+  //  m_cliente->sendMessage(orden);
 }
 
 void MainWindow::comprobarBotonOrden()

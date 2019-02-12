@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QList>
+#include <QUuid>
 #include <QString>
 #include <QByteArray>
 #include <QPair>
@@ -17,6 +18,7 @@ struct MensajeEntrante {
 
 struct ClienteVerificado {
   QString nombre;
+  QUuid id;
   QString tipo; //tecnico o cliente
   QWebSocket *cliente;
 };
@@ -32,6 +34,7 @@ public:
     QList<QWebSocket *> m_clientes;
     QList<ClienteVerificado> m_clientesVerificados;
     void emitTextMessage(QString message, QWebSocket *pClient);
+    void emitTextMessageACliente(QString message, QUuid id);
     bool estaEnListaVerificados(QWebSocket * aVerificar);
     bool estaEnListaVerifcadosConTipo(QWebSocket * aVerificar, QString tipo);
 signals:

@@ -9,7 +9,7 @@ class XML
 public:
     XML();
     QString generarLogin(QString user, QString pass);
-    QString generarConsultaDispositivos(QString consulta);
+    QString generarActionConsulta(QString action, QString consulta);
     QString generarOrden(QString tienda,QString cliente,QString dispositivo);
     QString devolverNodo(QString *archivoXML, QString nodo);
     QStringList devolverNodos(QString *archivoXML, QString nodos);

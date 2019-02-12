@@ -24,7 +24,6 @@ void Aplicacion::enviarLogin()
    m_tienda = m_login->getUser();
    QString loginXML = m_xml->generarLogin(m_tienda,m_login->getPassword());
    m_cliente->sendMessage(loginXML);
-
 }
 
 QString Aplicacion::getTienda()
@@ -58,12 +57,19 @@ void Aplicacion::reciveMessage(QString message)
         {
             m_window->recibirOrdenExito();
         }
+    }else if(tipoConsulta == "ordenesActivas"){
+        if(m_window != NULL)
+        {
+            m_window->recibirOrdenesActivas(message);
+        }
+    }else{
     }
 }
+
 
 void Aplicacion::hacerLogin()
 {
     m_login->hide();
-    m_window = new MainWindow(nullptr,m_cliente,m_xml,m_tienda,m_login->m_user);
+    m_window = new MainWindow(nullptr,m_cliente,m_xml,m_tienda);
     m_window->show();
 }

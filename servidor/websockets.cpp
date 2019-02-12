@@ -60,6 +60,19 @@ void WebSocket::emitTextMessage(QString message, QWebSocket *pClient)
     pClient->sendTextMessage(message);
 }
 
+void WebSocket::emitTextMessageACliente(QString message, QUuid id)
+{
+    //Version avanzada, emite a todos los clientes que comparten tienda
+    //(estaciones de trabajo con diferentes sockets)s
+    for(auto i: m_clientesVerificados)
+    {
+        if(i.id == id)
+        {
+            i.cliente->sendTextMessage(message);
+        }
+    }
+}
+
 bool WebSocket::estaEnListaVerificados(QWebSocket * aVerificar)
 {
     bool devolver = false;

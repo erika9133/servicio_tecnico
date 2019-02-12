@@ -178,9 +178,9 @@ QUuid Consultas::devolverTecnicoMenosOrdenesReparando()
     return devolver;
 }
 
-QString Consultas::devolverOrdenesActicas(QString tecnico, QString tipo)
+QList<OrdenesActivas> Consultas::devolverOrdenesActicas(QString tecnico, QString tipo)
 {
-    QString devolver;
+    QList<OrdenesActivas> devolver;
     m_bbdd->connect();
     m_bbdd->m_db->transaction();
     QSqlQuery query("SELECT uuid_ordenes, cliente_ordenes FROM tecnicos "
@@ -195,9 +195,10 @@ QString Consultas::devolverOrdenesActicas(QString tecnico, QString tipo)
     }else{
         while(query.next())
         {
-            //qDebug() << query.value(0).toString();
-            //WIP Devolver DOs tipos distintos para mostrar en el cliente del tecnico.
-            devolver.append(query.value(0).toString()+"\n");
+            OrdenesActivas temp;
+            temp.id = query.value(0).toString();
+            temp.cliente = query.value(1).toString();
+            devolver.append(temp);
         }
     }
     m_bbdd->m_db->commit();

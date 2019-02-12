@@ -6,6 +6,11 @@
 #include <QUuid>
 #include "bbdd.h"
 
+struct OrdenesActivas {
+  QUuid id;
+  QString cliente;
+};
+
 class Consultas
 {
 public:
@@ -18,7 +23,7 @@ public:
     QUuid devolverUuid(QString registro, QString tabla);
     bool verificarLogin(QString user, QString pass, QString tabla);
     QUuid devolverTecnicoMenosOrdenesReparando();
-    QString devolverOrdenesActicas(QString tecnico,QString tipo);
+    QList<OrdenesActivas> devolverOrdenesActicas(QString tecnico,QString tipo);
 
 private:
     BBDD *m_bbdd;

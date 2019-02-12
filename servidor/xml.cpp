@@ -71,20 +71,19 @@ QString XML::generarLogin(bool verificacion)
     return devolver;
 }
 
-//Genera el XMl de envio con dispositivos aceptados
-QString XML::generarDispositivos(QStringList *dispositivos)
+QString XML::generarActionConsultas(QString action, QStringList *consultas)
 {
     QString insercion;
     QString devolver;
-    for(int i; i < dispositivos->size(); i++)
+    for(int i; i < consultas->size(); i++)
     {
-        insercion.append("<consulta>\n"+dispositivos->at(i)+"</consulta>\n");
+        insercion.append("<consulta>\n"+consultas->at(i)+"</consulta>\n");
     }
     devolver = {"<?xml version='1.0' encoding='UTF-8'?>\n"
                 "<!DOCTYPE servicio_tecnico SYSTEM 'http://www.3r1k4.com/dtd/dispositivos.dtd'>\n"
                 "<servicio_tecnico>\n"
                 "<action>\n"
-                "dispositivos\n"
+                +action+"\n"
                 "</action>\n"
                 +insercion+
                 "</servicio_tecnico>"

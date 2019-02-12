@@ -45,7 +45,6 @@ QString XML::generarActionConsulta(QString action, QString consulta)
 
 }
 
-
 //Devuelve el contenido de un nodo
 QString XML::devolverNodo(QString *archivoXML, QString nodo)
 {

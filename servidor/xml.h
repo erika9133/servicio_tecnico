@@ -17,7 +17,7 @@ public:
     XML();
    ~XML();
     QString generarRespuestaSimple(QString action, QString respuesta);
-    QString generarDispositivos(QStringList *dispositivos);
+    QString generarActionConsultas(QString action, QStringList *consultas);
     QString generarLogin(bool verificacion);
     QStringList procesarOrden(QStringList *orden);
     bool validaXML(QString *archivoXML);

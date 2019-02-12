@@ -56,6 +56,7 @@ void Controlador::procesarPeticion(MensajeEntrante m)
                     /// Asi habra correspondencia entre el pclient y quien es para el sistema
                     ClienteVerificado cli;
                     cli.nombre = tiendaUser;
+                    cli.id = m_consultas->devolverUuid(tiendaUser,"listado_tiendas");
                     cli.tipo = "tienda";
                     cli.cliente = m.cliente;
                     m_ws->m_clientesVerificados.append(cli);
@@ -74,6 +75,7 @@ void Controlador::procesarPeticion(MensajeEntrante m)
                 ClienteVerificado cli;
                 cli.nombre = tecnicoUser;
                 cli.tipo = "tecnico";
+                cli.id = m_consultas->devolverUuid(tecnicoUser,"uuid_tecnicos");
                 cli.cliente = m.cliente;
                 m_ws->m_clientesVerificados.append(cli);
             }
@@ -84,7 +86,7 @@ void Controlador::procesarPeticion(MensajeEntrante m)
             QStringList devolverDispositivos = m_consultas->devolverConsultaDosCondiciones("nombre_dispositivos","dispositivos","nombre_dispositivos",tipoDispositivo);
             if(!devolverDispositivos.isEmpty())
             {
-                QString envio = m_xml->generarDispositivos(&devolverDispositivos);
+                QString envio = m_xml->generarActionConsultas("dispositivos",&devolverDispositivos);
                 m_ws->emitTextMessage(envio,m.cliente);
             }
         }else if(action == "orden"){
@@ -115,36 +117,31 @@ void Controlador::procesarPeticion(MensajeEntrante m)
             ///Solo los tecnicos pueden listar ordenes
             if(m_ws->estaEnListaVerifcadosConTipo(m.cliente,"tecnico"))
             {
-                QString orden = m_xml->devolverNodo(&m.message,"consulta");
-               /*QStringList devolverDispositivos = m_consultas->devolverConsultaDosCondiciones("nombre_dispositivos","dispositivos","nombre_dispositivos",tipoDispositivo);
-                if(!devolverDispositivos.isEmpty())
-                {
-                    QString envio = m_xml->generarDispositivos(&devolverDispositivos);
-                    m_ws->emitTextMessage(envio,m.cliente);
-                }
+                QUuid id;
+                QString consulta = m_xml->devolverNodo(&m.message,"consulta");
+                QString tecnico  = [=]()->QString{
+                        QString devolver;
+                        for (auto i : m_ws->m_clientesVerificados) {
+                            if(i.cliente == m.cliente){
+                                devolver = i.nombre;
+                                i.id = id; //Para el envio posterior
+                            }
+                        }
+                        return devolver;
+                }();
 
-                */
-
-
-                 QString tienda = m_xml->devolverNodo(&m.message,"tienda");
-                 QString cliente = m_xml->devolverNodo(&m.message,"cliente");
-                 QString dispositivo = m_xml->devolverNodo(&m.message,"dispositivo");
-                 //Implementar tecnicos y estados de reparacion
-                 QUuid tecnicos = m_consultas->devolverUuid("Martin horacio fernandez de la cruz","tecnicos");
-                 QUuid estados_reparacion = m_consultas->devolverUuid("reparando","estados_reparacion");
-                 //Implementar*********************************
-                 QUuid dispositivos = m_consultas->devolverUuid(dispositivo,"dispositivos");
-                 QUuid listado_tiendas = m_consultas->devolverUuid(tienda,"listado_tiendas");
-                 if((listado_tiendas != NULL) && (estados_reparacion != NULL) && (dispositivo != NULL))
-                 {
-                     bool checkOrden = m_consultas->crearOrden(cliente,estados_reparacion,tecnicos,dispositivos,listado_tiendas);
-                     if(checkOrden)
-                     {
-                         QString xmlExito = m_xml->generarRespuestaSimple("ordenExito","ordenExito");
-                         m_ws->emitTextMessage(xmlExito,m.cliente);
-                     }
-                 }//end if
+                QStringList ordenes = [=]()->QStringList{
+                            QStringList devolver;
+                            QList<OrdenesActivas> ordenes = m_consultas->devolverOrdenesActicas(tecnico,"reparando");
+                            for(auto i : ordenes){
+                                devolver.append(i.id.toString()+"\n"+i.cliente);
+                            }
+                            return devolver;
+                }();
+                QString envio = m_xml->generarActionConsultas("ordenesActivas", &ordenes);
+                m_ws->emitTextMessageACliente(envio,id);
              }//end if verificado
+
         }else{
 
         }
