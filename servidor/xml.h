@@ -9,6 +9,7 @@
 #include <QXmlInputSource>
 #include <QDomDocument>
 
+
 class XML : public QObject
 {
     Q_OBJECT
@@ -16,14 +17,14 @@ class XML : public QObject
 public:
     XML();
    ~XML();
-    QString generarRespuestaSimple(QString action, QString respuesta);
-    QString generarActionConsultas(QString action, QStringList *consultas);
-    QString generarLogin(bool verificacion);
-    QStringList procesarOrden(QStringList *orden);
-    bool validaXML(QString *archivoXML);
-    QString devolverNodo(QString *archivoXML, QString nodo);
-    QStringList devolverNodos(QString *archivoXML, QString nodos);
-    QStringList procesarXML(QString *archivoXML);
+    static QString generarRespuestaSimple(QString action, QString respuesta);
+    static QString generarActionConsultas(QString action, QStringList *consultas);
+    static QString generarLogin(bool verificacion);
+    static QStringList procesarOrden(QStringList *orden);
+    static bool validaXML(QString *archivoXML);
+    static QString devolverNodo(QString *archivoXML, QString nodo);
+    static QStringList devolverNodos(QString *archivoXML, QString nodos);
+    static QStringList procesarXML(QString *archivoXML);
 };
 
 #endif // XML_H

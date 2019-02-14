@@ -44,12 +44,18 @@ bool Consultas::crearOrden(QString cliente, QUuid estados_reparacion,
                     "'"+dispositivos.toString()+"',"
                     "'"+listado_tiendas.toString()+"'"
                     ")", *m_bbdd->m_db);
-
+    query.bindValue(0,cliente);
+    query.bindValue(1,estados_reparacion);
+    query.bindValue(2,tecnicos);
+    query.bindValue(3,cliente);
+    query.bindValue(4,dispositivos);
+    query.bindValue(5,listado_tiendas);
     QString lastError = query.lastError().text().trimmed();
     if (!lastError.isEmpty())
     {
         qDebug() << lastError;
     }else{
+        query.first();
         devolver = true;
     }
     m_bbdd->m_db->commit();
@@ -77,6 +83,10 @@ QStringList Consultas::devolverConsultaDosCondiciones(QString select, QString fr
                " like "
                +like+
                ";", *m_bbdd->m_db);
+    query.bindValue(0,select);
+    query.bindValue(1,from);
+    query.bindValue(2,where);
+    query.bindValue(3,like);
     QString lastError = query.lastError().text().trimmed();
     if (!lastError.isEmpty())
     {
@@ -86,7 +96,8 @@ QStringList Consultas::devolverConsultaDosCondiciones(QString select, QString fr
         while(query.next())
         {
             //qDebug() << query.value(0).toString();
-            devolver.append(query.value(0).toString()+"\n");
+           // devolver.append(query.value(0).toString()+"\n");
+             devolver.append(query.value(0).toString());
         }
     }
     m_bbdd->m_db->commit();
@@ -108,6 +119,8 @@ QUuid Consultas::devolverUuid(QString registro, QString tabla)
                     " = "
                     "'"+registro+"'"
                     " ;", *m_bbdd->m_db);
+    query.bindValue(0,registro);
+    query.bindValue(1,tabla);
     QString lastError = query.lastError().text().trimmed();
     if (!lastError.isEmpty())
     {
@@ -137,6 +150,9 @@ bool Consultas::verificarLogin(QString user, QString pass, QString tabla)
                     " = "
                     "'"+pass+"'"
                     " ;", *m_bbdd->m_db);
+    query.bindValue(0,user);
+    query.bindValue(1,pass);
+    query.bindValue(2,tabla);
     QString lastError = query.lastError().text().trimmed();
     if (!lastError.isEmpty())
     {
@@ -157,6 +173,7 @@ QUuid Consultas::devolverTecnicoMenosOrdenesReparando()
     QUuid devolver;
     m_bbdd->connect();
     m_bbdd->m_db->transaction();
+
     QSqlQuery query("SELECT tecnicos.uuid_tecnicos "
                     "FROM tecnicos "
                     "join ordenes on ordenes.uuid_tecnicos=tecnicos.uuid_tecnicos "
@@ -187,6 +204,8 @@ QList<OrdenesActivas> Consultas::devolverOrdenesActicas(QString tecnico, QString
                     " join ordenes on ordenes.uuid_tecnicos=tecnicos.uuid_tecnicos "
                     " join estados_reparacion on estados_reparacion.uuid_estados_reparacion=ordenes.uuid_estados_reparacion "
                     " where nombre_estados_reparacion like '"+tipo+"' and tecnicos.nombre_tecnicos like '"+tecnico+"';", *m_bbdd->m_db);
+    query.bindValue(0,tecnico);
+    query.bindValue(1,tipo);
     QString lastError = query.lastError().text().trimmed();
     if (!lastError.isEmpty())
     {

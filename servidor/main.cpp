@@ -6,7 +6,7 @@
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-    Controlador * ctl = new Controlador();
-   // delete ctl;
-    return a.exec();
+    Controlador ctl;
+    a.exec();
+    return 0;
 }

@@ -134,7 +134,8 @@ void Controlador::procesarPeticion(MensajeEntrante m)
                             QStringList devolver;
                             QList<OrdenesActivas> ordenes = m_consultas->devolverOrdenesActicas(tecnico,"reparando");
                             for(auto i : ordenes){
-                                devolver.append(i.id.toString()+"\n"+i.cliente);
+                                //devolver.append(i.id.toString()+"\n"+i.cliente);
+                                devolver.append(i.id.toString()+i.cliente);
                             }
                             return devolver;
                 }();

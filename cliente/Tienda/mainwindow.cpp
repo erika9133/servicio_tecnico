@@ -31,8 +31,10 @@ void MainWindow::recibirListaDispositivos(QString &message)
 {    
     ui->listaDispositivos->clear();
     QStringList tipoDispositivos = m_xml->devolverNodos(&message,"consulta");
+      qDebug() << "tamanyo lista" << tipoDispositivos.size();
     if(!tipoDispositivos.empty())
     {
+
         for(int i = 0; i < tipoDispositivos.size(); i++)
         {
             ui->listaDispositivos->addItem(tipoDispositivos.at(i));

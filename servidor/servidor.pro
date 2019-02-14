@@ -5,7 +5,7 @@ CONFIG -= app_bundle
 
 LIBS += -lxml2
 #INCLUDEPATH += libxml
-TARGET = xml_dtd
+TARGET = servidor_sv
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
