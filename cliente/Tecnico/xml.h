@@ -8,11 +8,11 @@ class XML
 {
 public:
     XML();
-    QString generarLogin(QString user, QString pass);
-    QString generarActionConsulta(QString action, QString consulta);
-    QString devolverNodo(QString *archivoXML, QString nodo);
-    QStringList devolverNodos(QString *archivoXML, QString nodos);
-    QStringList procesarXML(QString *archivoXML);
+    static QString generarLogin(QString user, QString pass);
+    static QString generarActionConsulta(QString action, QString consulta);
+    static QString devolverNodo(QString *archivoXML, QString nodo);
+    static QStringList devolverNodos(QString *archivoXML, QString nodos);
+    static QStringList procesarXML(QString *archivoXML);
 };
 
 #endif // XML_H

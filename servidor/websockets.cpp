@@ -1,13 +1,14 @@
 #include <QDebug>
+#include <iostream>
+#include <fstream>
 #include "QtWebSockets/qwebsocketserver.h"
 #include "QtWebSockets/qwebsocket.h"
 #include "websockets.h"
-#include "utils.h"
 
 WebSocket::WebSocket() : m_pWebSocketServer(new QWebSocketServer(QStringLiteral("servicio_tecnico")
                                                                  ,QWebSocketServer::NonSecureMode, this))
 {
-    QStringList conf = Utils::leerArchivoLineaPorLinea("configWS.txt");
+    QStringList conf = leerArchivoLineaPorLinea("configWS.txt");
     //QString host = conf.at(0);
     quint16 port = conf.at(1).toUShort();
     if (m_pWebSocketServer->listen(QHostAddress::Any, port))
@@ -55,7 +56,7 @@ void WebSocket::processTextMessage(QString message)
    // qDebug() << "De: " << pClient << " Mensaje recibido";
 }
 
-void WebSocket::emitTextMessage(QString message, QWebSocket *pClient)
+void WebSocket::emitTextMessage(const QString message, QWebSocket *pClient)
 {
     pClient->sendTextMessage(message);
 }
@@ -73,7 +74,7 @@ void WebSocket::emitTextMessageACliente(QString message, QUuid id)
     }
 }
 
-bool WebSocket::estaEnListaVerificados(QWebSocket * aVerificar)
+bool WebSocket::estaEnListaVerificados(const QWebSocket * aVerificar)
 {
     bool devolver = false;
     for(auto i: m_clientesVerificados)
@@ -86,7 +87,7 @@ bool WebSocket::estaEnListaVerificados(QWebSocket * aVerificar)
     }
     return devolver;
 }
-bool WebSocket::estaEnListaVerifcadosConTipo(QWebSocket * aVerificar, QString tipo)
+bool WebSocket::estaEnListaVerifcadosConTipo(const QWebSocket * aVerificar, const QString tipo)
 {
     bool devolver = false;
     for(auto i: m_clientesVerificados)
@@ -117,4 +118,20 @@ void WebSocket::socketDisconnected()
         //if(m_clientesVerificados.contains(pClient)) m_clientesVerificados.removeAll(pClient);
         //if(m_tecnicosVerificados.contains(pClient)) m_tecnicosVerificados.removeAll(122pClient);
     } // end if
+}
+
+QStringList WebSocket::leerArchivoLineaPorLinea(const QString archivo)
+{
+    QStringList lista;
+    std::ifstream archivoTempI;
+    std::string linea;
+    archivoTempI.open (archivo.toStdString().c_str());
+    if(archivoTempI.is_open())
+    {
+       while (getline(archivoTempI,linea))
+       {
+           lista.append(linea.c_str());
+       }
+    }
+    return lista;
 }

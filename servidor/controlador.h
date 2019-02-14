@@ -5,26 +5,26 @@
 #include <QString>
 #include "websockets.h"
 #include "xml.h"
-#include "consultas.h"
+#include "bbdd.h"
 
 
 class Controlador : public QObject
 {
     Q_OBJECT
+    BBDD *m_bbdd;
+    WebSocket *m_ws;
+    QUuid gestorDeColas(const QString criterio);
 
 public:
     Controlador();
     ~Controlador();
     void iniciarBBDD();
     void iniciarWS();
+
 private slots:
-    void procesarPeticion(MensajeEntrante m);
-private:
-   BBDD *m_bbdd;
-   WebSocket *m_ws;
-   XML *m_xml;
-   Consultas *m_consultas;
-   QUuid gestorDeColas(QString criterio);
+    void procesarPeticion(const MensajeEntrante m);
+
+
 
 };
 

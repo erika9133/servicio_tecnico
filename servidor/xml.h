@@ -10,21 +10,29 @@
 #include <QDomDocument>
 
 
-class XML : public QObject
+class XML
 {
-    Q_OBJECT
-
 public:
     XML();
    ~XML();
-    static QString generarRespuestaSimple(QString action, QString respuesta);
-    static QString generarActionConsultas(QString action, QStringList *consultas);
-    static QString generarLogin(bool verificacion);
-    static QStringList procesarOrden(QStringList *orden);
-    static bool validaXML(QString *archivoXML);
-    static QString devolverNodo(QString *archivoXML, QString nodo);
-    static QStringList devolverNodos(QString *archivoXML, QString nodos);
-    static QStringList procesarXML(QString *archivoXML);
+    //Validar
+    static bool validaXML(const QString *archivoXML);
+
+    //Generar respuestas A clientes
+    static QString generarRespuestaSimple(const QString action, const QString respuesta);
+    static QString generarActionConsultas(const QString action, const QStringList *consultas);
+    static QString generarLogin(const bool verificacion);
+
+    //Procesar respuestas DE clientes
+    static QStringList procesarOrden(const QStringList *orden);
+    static QStringList procesarXML(const QString *archivoXML);
+
+    static QString devolverNodo(const QString *archivoXML, const QString nodo);
+    static QStringList devolverNodos(const QString *archivoXML, const QString nodos);
+
+    static void escribir(const QString archivo, const QString linea);
+    static void escribir(const QString archivo, const QStringList lista);
+    static void crearArchivo(const QString archivo);
 };
 
 #endif // XML_H

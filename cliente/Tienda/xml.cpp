@@ -84,7 +84,7 @@ QString XML::devolverNodo(QString *archivoXML, QString nodo)
 //Devuelve el contenido de un conjunto de nodos
 QStringList XML::devolverNodos(QString *archivoXML, QString nodos)
 {
-    QStringList devolver;
+    QStringList devolver = {};
     QString xmlText = *archivoXML;
     QDomDocument doc;
     doc.setContent(xmlText);

@@ -11,6 +11,7 @@ class QWebSocket;
 class Cliente : public QObject
 {
     Q_OBJECT
+
 public:
     explicit Cliente();
     ~Cliente();

@@ -1,11 +1,13 @@
 #include <QDebug>
+#include <QTimer>
 #include "aplicacion.h"
 
 Aplicacion::Aplicacion()
 {
-    m_xml = new XML();
+    //m_xml = new XML();
     m_cliente = new Cliente();
     m_login = new Login();
+    QTimer::singleShot(0,m_cliente,SLOT(go()));
     connect(m_login, SIGNAL(checkLogin()), this, SLOT(enviarLogin()));
     connect(m_cliente, SIGNAL(procesarMensaje(QString)), this, SLOT(reciveMessage(QString)));
     m_login->show();
@@ -22,7 +24,7 @@ Aplicacion::~Aplicacion()
 void Aplicacion::enviarLogin()
 {
    m_tienda = m_login->getUser();
-   QString loginXML = m_xml->generarLogin(m_tienda,m_login->getPassword());
+   QString loginXML = XML::generarLogin(m_tienda,m_login->getPassword());
    m_cliente->sendMessage(loginXML);
 }
 
@@ -38,10 +40,10 @@ void Aplicacion::setTienda(QString tienda)
 
 void Aplicacion::reciveMessage(QString message)
 {
-    QString tipoConsulta = m_xml->devolverNodo(&message,"action");
+    QString tipoConsulta = XML::devolverNodo(&message,"action");
     if(tipoConsulta == "login")
     {
-        if(m_xml->devolverNodo(&message,"consulta") == "valido"){
+        if(XML::devolverNodo(&message,"consulta") == "valido"){
             hacerLogin();
         }else{
             m_login->error();

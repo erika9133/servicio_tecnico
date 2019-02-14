@@ -19,9 +19,7 @@ SOURCES += \
     bbdd.cpp \
     controlador.cpp \
     websockets.cpp \
-    utils.cpp \
-    xml.cpp \
-    consultas.cpp
+    xml.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -32,6 +30,4 @@ HEADERS += \
     bbdd.h \
     controlador.h \
     websockets.h \
-    utils.h \
-    xml.h \
-    consultas.h
+    xml.h

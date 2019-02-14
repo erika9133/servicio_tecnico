@@ -26,6 +26,8 @@ struct ClienteVerificado {
 class WebSocket : public QObject
 {
     Q_OBJECT
+    QWebSocketServer *m_pWebSocketServer;
+    static QStringList leerArchivoLineaPorLinea(const QString archivo);
 
 public:
     explicit WebSocket();
@@ -33,20 +35,16 @@ public:
     bool *m_wsStatus;
     QList<QWebSocket *> m_clientes;
     QList<ClienteVerificado> m_clientesVerificados;
-    void emitTextMessage(QString message, QWebSocket *pClient);
-    void emitTextMessageACliente(QString message, QUuid id);
-    bool estaEnListaVerificados(QWebSocket * aVerificar);
-    bool estaEnListaVerifcadosConTipo(QWebSocket * aVerificar, QString tipo);
+    void emitTextMessage(const QString message, QWebSocket *pClient);
+    void emitTextMessageACliente(const QString message, const QUuid id);
+    bool estaEnListaVerificados(const QWebSocket * aVerificar);
+    bool estaEnListaVerifcadosConTipo(const QWebSocket * aVerificar, const QString tipo);
 signals:
     void closed();
-    void mensajeRecibido(MensajeEntrante message);
+    void mensajeRecibido(const MensajeEntrante message);
 private slots:
     void onNewConnection();
-    void processTextMessage(QString message);
+    void processTextMessage(const QString message);
     void socketDisconnected();
-private:
-    QWebSocketServer *m_pWebSocketServer;
-
 };
-
 #endif // WEBSOCKETS_H

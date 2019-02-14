@@ -3,17 +3,17 @@
 #include <QXmlSimpleReader>
 #include <QXmlDefaultHandler>
 #include <iostream>
+#include <fstream>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include "xml.h"
-#include "utils.h"
 
 XML::XML(){}
 
 XML::~XML(){}
 
 //Procesa un mensaje de tipo orden
-QStringList XML::procesarOrden(QStringList *orden)
+QStringList XML::procesarOrden(const QStringList *orden)
 {
     QString tienda;
     QString cliente;
@@ -71,7 +71,7 @@ QString XML::generarLogin(bool verificacion)
     return devolver;
 }
 
-QString XML::generarActionConsultas(QString action, QStringList *consultas)
+QString XML::generarActionConsultas(const QString action, const QStringList *consultas)
 {
     QString insercion;
     QString devolver;
@@ -92,7 +92,7 @@ QString XML::generarActionConsultas(QString action, QStringList *consultas)
     return devolver;
 }
 
-bool XML::validaXML(QString *archivoXML)
+bool XML::validaXML(const QString *archivoXML)
 {
     //QString temp = *archivoXML;
     //temp.replace('\n',' ');
@@ -113,9 +113,9 @@ bool XML::validaXML(QString *archivoXML)
      *
      */
     //QStringList listatemp = procesarXML(&temp);
-    QString archivoTemp = Utils::generarUUID().toString()+".txt";
-    Utils::crearArchivo(archivoTemp);
-    Utils::escribir(archivoTemp,*archivoXML);
+    QString archivoTemp = QUuid::createUuid().toString()+".txt";
+    crearArchivo(archivoTemp);
+    escribir(archivoTemp,*archivoXML);
     /// Analiza el archivo activando la opción de validación DTD.
     xmlDocPtr doc = xmlCtxtReadFile(ctxt, archivoTemp.toStdString().c_str(), NULL, XML_PARSE_DTDVALID);
     //xmlDocPtr doc = xmlCtxtReadDoc(ctxt, NULL,validar,NULL, XML_PARSE_DTDVALID);
@@ -140,7 +140,7 @@ bool XML::validaXML(QString *archivoXML)
 }
 
 //Devuelve el contenido de un nodo
-QString XML::devolverNodo(QString *archivoXML, QString nodo)
+QString XML::devolverNodo(const QString *archivoXML, const QString nodo)
 {
     QString devolver = "";
     QString xmlText = *archivoXML;
@@ -152,9 +152,9 @@ QString XML::devolverNodo(QString *archivoXML, QString nodo)
 }
 
 //Devuelve el contenido de un conjunto de nodos
-QStringList XML::devolverNodos(QString *archivoXML, QString nodos)
+QStringList XML::devolverNodos(const QString *archivoXML, const QString nodos)
 {
-    QStringList devolver;
+    QStringList devolver = {};
     QString xmlText = *archivoXML;
     QDomDocument doc;
     doc.setContent(xmlText);
@@ -212,3 +212,30 @@ QString XML::devolverNodo(QString *archivoXML, QString nodo)
     return devolver;
 }
 */
+
+void XML::escribir(QString archivo, QString linea)
+{
+        std::ofstream archivoTemp;
+        archivoTemp.open (archivo.toStdString().c_str(), std::ios::ate | std::ios::app);
+        //archivoTemp << currentDateTime() << "\t" << datos << "\n" << std::endl;
+        archivoTemp << linea.toStdString() << std::endl;
+        archivoTemp.close();
+}
+
+void XML::escribir(QString archivo, QStringList lista)
+{
+        std::ofstream archivoTemp;
+        archivoTemp.open (archivo.toStdString().c_str(), std::ios::ate | std::ios::app);
+        for(auto i : lista)
+        {
+             archivoTemp << i.toStdString() << std::endl;
+        }
+        archivoTemp.close();
+}
+
+void XML::crearArchivo(QString archivo)
+{
+       std::ofstream archivoTemp;
+       archivoTemp.open (archivo.toStdString().c_str(), std::ios::ate | std::ios::app);
+       archivoTemp.close();
+}
