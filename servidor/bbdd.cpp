@@ -36,6 +36,7 @@ void BBDD::connect()
             m_bdStatus = false;
             qDebug() << "Error de conexion" << error.text();
         }
+      // qDebug() << "" << QUuid::createUuid().toString();
     }
 }
 
@@ -81,7 +82,7 @@ bool BBDD::crearOrden(QString cliente, QUuid estados_reparacion,
     //tecnicos = "27e9cc28-56fb-4967-b72e-1615dc614559";
     //QUuid dispositivos = "920dddb7-3cf5-4e9a-8e2d-4426b1e8973a";
     //QUuid listado_tiendas = "a91d6f79-330e-4fa5-a27c-fae47d994b09";
-
+    if(tecnicos == "00000000-0000-0000-0000-000000000000") tecnicos = "";
     bool devolver = false;
     connect();
     m_db.transaction();
@@ -192,6 +193,31 @@ QUuid BBDD::devolverUuid(QString registro, QString tabla)
     return devolver;
 }
 
+QUuid BBDD::devolverOrdenLibre()
+{
+    QUuid devolver;
+    connect();
+    m_db.transaction();
+    QSqlQuery query("SELECT ordenes.uuid_ordenes "
+                    "FROM ordenes "
+                    "join estados_reparacion on estados_reparacion.uuid_estados_reparacion=ordenes.uuid_estados_reparacion "
+                    "where nombre_estados_reparacion like 'pendiente' "
+                    "group by ordenes.uuid_ordenes "
+                    "order by hora_ordenes asc limit 1; ", m_db);
+    QString lastError = query.lastError().text().trimmed();
+    if (!lastError.isEmpty())
+    {
+     qDebug() << lastError;
+    }else{
+        //You should call query.first() before you can access returned data. additionally if your query returns more than one row, you should iterate via query.next().
+        query.first();
+        devolver = query.value(0).toUuid();
+    }
+    m_db.commit();
+    disconnect();
+    return devolver;
+}
+
 bool BBDD::verificarLogin(QString user, QString pass, QString tabla)
 {
     bool devolver = false;
@@ -222,6 +248,7 @@ bool BBDD::verificarLogin(QString user, QString pass, QString tabla)
     m_db.commit();
     disconnect();
     if(respuesta == user) devolver = true;
+    qDebug() << devolver;
     return devolver;
 }
 
@@ -255,6 +282,7 @@ QUuid BBDD::devolverTecnicoMenosOrdenesReparando()
 QList<OrdenesActivas> BBDD::devolverOrdenesActicas(QString tecnico, QString tipo)
 {
     QList<OrdenesActivas> devolver;
+    if(tecnico == "todos") tecnico = "%";
     connect();
     m_db.transaction();
     QSqlQuery query("SELECT uuid_ordenes, cliente_ordenes FROM tecnicos "
@@ -296,6 +324,31 @@ QStringList BBDD::leerArchivoLineaPorLinea(QString archivo)
        }
     }
     return lista;
+}
+
+QString BBDD::devolverMensajeError(const int id)
+{
+    connect();
+    QString idString = QString::number(id);
+    m_db.transaction();
+    QString devolver = "";
+    QSqlQuery query("SELECT nombre_codigos_error"
+                    "FROM codigos_error"
+                    "where id_codigos_error = "
+                    +idString+";", m_db);
+    query.bindValue(0,idString);
+    QString lastError = query.lastError().text().trimmed();
+    if (!lastError.isEmpty())
+    {
+        qDebug() << lastError;
+
+    }else{
+        query.first();
+        devolver = query.value(0).toString();
+    }
+    m_db.commit();
+    disconnect();
+    return devolver;
 }
 
 
