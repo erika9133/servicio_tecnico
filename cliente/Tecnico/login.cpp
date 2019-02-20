@@ -13,7 +13,7 @@ Login::Login(QWidget *parent) :
     m_pass = new QString();
     //debug
     ui->error->hide();
-    ui->tecnico->setText("Martin horacio fernandez de la cruz");
+    ui->tecnico->setText("pepe");
     ui->password->setText("chocolate");
 }
 

@@ -5,17 +5,16 @@
 Aplicacion::Aplicacion()
 {
     //m_xml = new XML();
+
+    QTimer::singleShot(0,this,SLOT(go()));
     m_cliente = new Cliente();
     m_login = new Login();
-    QTimer::singleShot(0,m_cliente,SLOT(go()));
-    connect(m_login, SIGNAL(checkLogin()), this, SLOT(enviarLogin()));
-    connect(m_cliente, SIGNAL(procesarMensaje(QString)), this, SLOT(reciveMessage(QString)));
     m_login->show();
 }
 
 Aplicacion::~Aplicacion()
 {
-    delete m_xml;
+   // delete m_xml;
     delete m_cliente;
     delete m_login;
     delete m_window;
@@ -27,6 +26,11 @@ void Aplicacion::enviarLogin()
    QString loginXML = XML::generarLogin(m_tienda,m_login->getPassword());
    m_cliente->sendMessage(loginXML);
 
+}
+void Aplicacion::go()
+{
+    connect(m_login, SIGNAL(checkLogin()), this, SLOT(enviarLogin()));
+    connect(m_cliente, SIGNAL(procesarMensaje(QString)), this, SLOT(reciveMessage(QString)));
 }
 
 QString Aplicacion::getTienda()
@@ -41,6 +45,7 @@ void Aplicacion::setTienda(QString tienda)
 
 void Aplicacion::reciveMessage(QString message)
 {
+    qDebug() << "el mensaje recibido es: " << message;
     QString tipoConsulta = XML::devolverNodo(&message,"action");
     if(tipoConsulta == "login")
     {
@@ -66,6 +71,6 @@ void Aplicacion::reciveMessage(QString message)
 void Aplicacion::hacerLogin()
 {
     m_login->hide();
-    m_window = new MainWindow(nullptr,m_cliente,m_xml,m_tienda);
+    m_window = new MainWindow(nullptr,m_cliente,m_tienda);
     m_window->show();
 }

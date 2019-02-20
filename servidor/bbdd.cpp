@@ -233,17 +233,19 @@ bool BBDD::verificarLogin(QString user, QString pass, QString tabla)
                     " = "
                     "'"+pass+"'"
                     " ;", m_db);
-    query.bindValue(0,user);
-    query.bindValue(1,pass);
-    query.bindValue(2,tabla);
+   // query.bindValue(0,user);
+    //query.bindValue(1,pass);
+    //query.bindValue(2,tabla);
     QString lastError = query.lastError().text().trimmed();
     if (!lastError.isEmpty())
     {
      qDebug() << lastError;
     }else{
+
         //You should call query.first() before you can access returned data. additionally if your query returns more than one row, you should iterate via query.next().
         query.first();
         respuesta = query.value(0).toString();
+        qDebug() << respuesta;
     }
     m_db.commit();
     disconnect();

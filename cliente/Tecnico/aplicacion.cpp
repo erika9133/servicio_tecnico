@@ -40,6 +40,7 @@ void Aplicacion::setTienda(QString tienda)
 
 void Aplicacion::reciveMessage(QString message)
 {
+    qDebug() << message;
     QString tipoConsulta = XML::devolverNodo(&message,"action");
     if(tipoConsulta == "login")
     {

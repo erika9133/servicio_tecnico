@@ -86,7 +86,7 @@ bool WebSocket::estaVerificado(const QWebSocket * aVerificar)
     {
         if(i.cliente == aVerificar)
         {
-            devolver = true;
+            if(i.verificado) devolver = true;
             break;
         }
     }

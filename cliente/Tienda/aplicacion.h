@@ -18,12 +18,13 @@ public:
 private:
     QString m_tienda;
     QString m_password;
-    XML *m_xml;
+    //XML *m_xml;
     Cliente *m_cliente;
     Login *m_login;
     MainWindow *m_window;
     void hacerLogin();
 private slots:
+    void go();
     void enviarLogin();
     void reciveMessage(QString message);
 };

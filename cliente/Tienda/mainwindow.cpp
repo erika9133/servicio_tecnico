@@ -2,12 +2,12 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 
-MainWindow::MainWindow(QWidget *parent, Cliente *cliente, XML *xml, QString tienda) :
+MainWindow::MainWindow(QWidget *parent, Cliente *cliente, QString tienda) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    m_xml = xml;
+    //m_xml = xml;
     m_cliente = cliente;
     ui->orden->setEnabled(false);
     ui->exito->hide();
@@ -23,14 +23,14 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_buscar_clicked()
 {
-      QString consulta = m_xml->generarActionConsulta("dispositivos",ui->lineaDispositovos->text());
+      QString consulta = XML::generarActionConsulta("dispositivos",ui->lineaDispositovos->text());
       m_cliente->sendMessage(consulta);
 }
 
 void MainWindow::recibirListaDispositivos(QString &message)
 {    
     ui->listaDispositivos->clear();
-    QStringList tipoDispositivos = m_xml->devolverNodos(&message,"consulta");
+    QStringList tipoDispositivos = XML::devolverNodos(&message,"consulta");
       qDebug() << "tamanyo lista" << tipoDispositivos.size();
     if(!tipoDispositivos.empty())
     {
@@ -49,7 +49,7 @@ void MainWindow::recibirOrdenExito()
 
 void MainWindow::on_orden_clicked()
 {
-    QString orden = m_xml->generarOrden(ui->tienda->text(),ui->cliente->text(),ui->listaDispositivos->selectedItems().at(0)->text());
+    QString orden = XML::generarOrden(ui->tienda->text(),ui->cliente->text(),ui->listaDispositivos->selectedItems().at(0)->text());
     m_cliente->sendMessage(orden);
 }
 

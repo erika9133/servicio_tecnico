@@ -1,4 +1,5 @@
 #include <QDebug>
+#include <QTimer>
 #include "cliente.h"
 
 
@@ -6,7 +7,8 @@ QT_USE_NAMESPACE
 
 Cliente::Cliente()
 {
-    m_url = QUrl(QStringLiteral("ws://localhost:3344"));
+     QTimer::singleShot(0,this,SLOT(go()));
+     m_url = QUrl(QStringLiteral("ws://localhost:3344"));
 }
 
 Cliente::~Cliente()

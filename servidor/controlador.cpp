@@ -41,6 +41,7 @@ void Controlador::procesarPeticion(MensajeEntrante m)
     ///TO DO validar pasando nombre del dtd y no direccion de la ubicacion
     if(XML::validaXML(&m.message))
     {
+        qDebug() << m.message;
         QString action = XML::devolverNodo(&m.message,"action");
         if(action == "login"){
             QString tiendaUser = XML::devolverNodo(&m.message, "user");
@@ -48,14 +49,18 @@ void Controlador::procesarPeticion(MensajeEntrante m)
             ///Verifica que el usuario esta en la bbdd
             if(m_bbdd->verificarLogin(tiendaUser,tiendaPass,"listado_tiendas"))
             {   
+
                 ///Verificamos que esta verificado
                 if(!m_ws->estaVerificado(m.cliente))
                 {
+
                     QList<Cliente> &lista = m_ws->clientes();
                     for(int i = 0 ; i < lista.size() ; i++)
                     {
+
                         if(lista[i].cliente == m.cliente)
                         {
+                            qDebug() << "entra en verificacion";
                             lista[i].verificado = true;
                             lista[i].id = m_bbdd->devolverUuid(tiendaUser,"listado_tiendas");
                             lista[i].tipo = "tienda";
@@ -72,7 +77,7 @@ void Controlador::procesarPeticion(MensajeEntrante m)
         }else if(action == "loginStaff"){
             QString tecnicoUser = XML::devolverNodo(&m.message, "user");
             QString tecnicoPass = XML::devolverNodo(&m.message, "pass");
-            if(m_bbdd->verificarLogin(tecnicoUser,tecnicoPass,"listado_tiendas"))
+            if(m_bbdd->verificarLogin(tecnicoUser,tecnicoPass,"tecnicos"))
             {
                 if(!m_ws->estaVerificado(m.cliente))
                 {
